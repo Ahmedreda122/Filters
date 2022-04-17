@@ -17,7 +17,7 @@ unsigned char secondImage[SIZE][SIZE][RGB];
 void loadImage(unsigned char image[][SIZE][RGB]);
 void saveImage(unsigned char saved_image[][SIZE][RGB]);
 void blur();
-void darkenblack_levelen(string choice);
+void darkenlighten(string choice);
 int& parse_valid_input(string str, int& dimension);
 void shrink(int dimension);
 void merge();
@@ -63,7 +63,7 @@ int main()
         transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
         if (answer == "d" || answer == "l")
         {
-            darkenblack_levelen(answer);
+            darkenlighten(answer);
             saveImage(image);
         }
         else
@@ -126,6 +126,7 @@ void shrink(int dimension)
 {
 	// Creating an RGB image for to store horizontally shrinked horiginal image version 
     unsigned char neww_image[SIZE][SIZE][RGB];
+	// Counter for looping after every (dimension value) pixels each time 
     int counter = 0;
 
 	// Variables for storing averages of colours
@@ -213,19 +214,23 @@ int& parse_valid_input(string str, int& dimension)
     // Returning True if the input string was like the form we just make, False otherwise
     if (regex_match(str, isValidInput))
     {
+		// Getting dimension denominator
         char d[1] = {str[2]};
+		// Transfer it to integar
         dimension = atoi(d);
         return dimension;
     }
     else
     {
+		// Return primary value of dimension which is ZERO
         return dimension;
     }
 
 }
 
-void darkenblack_levelen(string choice)
+void darkenlighten(string choice)
 {
+	// If user choose to darken the image
     if (choice == "d")
     {
 		// Looping after pixels
@@ -242,6 +247,7 @@ void darkenblack_levelen(string choice)
             }
         }
     }
+	// If user choose to lighten the image
     else if (choice == "l")
     {
 		// Defining black_level that is equal to 255 - light_level(pixel value)
