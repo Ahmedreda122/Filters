@@ -121,6 +121,7 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
 
 void shrink(int dimension)
 {
+	// Creating an RGB image for to store horizontally shrinked horiginal image version 
     unsigned char neww_image[SIZE][SIZE][RGB];
     int counter = 0;
 
@@ -129,17 +130,18 @@ void shrink(int dimension)
 	double AVG_green = 0;
 	double AVG_blue = 0;
 	
-
     for (int i = 0; i < SIZE; ++i)
     {
         for (int j = 0; j < (SIZE / dimension); ++j)
         {
+			// Taking pixels by number of dimension then shrink it into one pixel by taking the average of them horizontally
             for (int c = counter; c < (counter + dimension); ++c)
             {
 				AVG_red += image[i][c][0];
 				AVG_green += image[i][c][1];
 				AVG_blue +=  image[i][c][2];
             }
+			// Storing shrinked pixels in neww_image
             neww_image[i][j][0] = (AVG_red / dimension);
 			neww_image[i][j][1] = (AVG_green / dimension);
 			neww_image[i][j][2] = (AVG_blue / dimension);
@@ -149,6 +151,7 @@ void shrink(int dimension)
 			AVG_blue = 0;
             counter += dimension;
         }
+		// Resetting counter to shrink next row
         counter = 0;
     }
 
