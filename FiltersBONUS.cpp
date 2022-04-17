@@ -21,13 +21,18 @@ void blur();
 
 int main()
 {
+<<<<<<< HEAD
   	string filter;
+=======
+	string filter; 
+>>>>>>> origin
 	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 
 	getline(cin, filter);
-	cin.ignore();
+	cin.ignore(0);
 
 	if (filter == "c")
+<<<<<<< HEAD
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -35,19 +40,34 @@ int main()
         saveImage(new_image);
         return 0;
 	}
+=======
+	{
+		cout << "Enter the source image file name: ";
+		loadImage(image);
+		blur();
+		saveImage(new_image);
+		return 0;
+	}
+	else
+	{
+		cout << "Wrong input, try again.";
+		return 1;
+	}	
+>>>>>>> origin
 
 }
 
 void loadImage(unsigned char image[][SIZE][RGB])
 {
-    char imageFileName[100];
+	char imageFileName[100];
 
-    // Get colored image file name
-    cin >> imageFileName;
+	// Get colored image file name
+	cin >> imageFileName;
+	cin.ignore();
 
-    // Add to it .bmp extension and load image
-    strcat(imageFileName, ".bmp");
-    readRGBBMP(imageFileName, image);
+	// Add to it .bmp extension and load image
+	strcat(imageFileName, ".bmp");
+	readRGBBMP(imageFileName, image);
 }
 
 void saveImage(unsigned char saved_image[][SIZE][RGB])
@@ -66,8 +86,9 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
 // Blur image
 void blur()
 {
+	// The divisor
 	float div;
-	// the average of colours
+	// The Average of colours
 	int Avred;
 	int Avgreen;
 	int Avblue;
@@ -79,7 +100,7 @@ void blur()
 			Avred = 0;
 			Avgreen = 0;
 			Avblue = 0;
-			//bluring the left corner
+			// Bluring the left corner
 			if ((x == 0) && (y == 0))
 			{
 				div = 4.0;
@@ -93,7 +114,7 @@ void blur()
 					}
 				}
 			}
-			//bluring top pixel's edge
+			// Bluring top pixel's edge
 			if ((x == 0) && (y > 0) && (y < (SIZE - 1)))
 			{
 				div = 6.0;
@@ -108,7 +129,7 @@ void blur()
 				}
 
 			}
-			//bluring the right corner
+			// Bluring the right corner
 			if ((x == 0) && (y == SIZE - 1))
 			{
 				div = 4.0;
@@ -122,7 +143,7 @@ void blur()
 					}
 				}
 			}
-			//bluring left edges
+			// Bluring left edges
 			if ((x > 0) && (y == 0) && (x < SIZE - 1))
 			{
 				div = 6.0;
@@ -136,7 +157,7 @@ void blur()
 					}
 				}
 			}
-			//bluring right edges
+			// Bluring right edges
 			if ((x > 0) && (y == SIZE - 1) && (x < SIZE - 1))
 			{
 				div = 6.0;
@@ -150,7 +171,7 @@ void blur()
 					}
 				}
 			}
-			//bluring another left corner
+			// Bluring another left corner
 			if ((x == (SIZE - 1)) && (y == 0))
 			{
 				div = 4.0;
@@ -164,7 +185,7 @@ void blur()
 					}
 				}
 			}
-			//bluring another right corner
+			// Bluring another right corner
 			if ((x == (SIZE - 1)) && (y == (SIZE - 1)))
 			{
 				div = 4.0;
@@ -178,7 +199,7 @@ void blur()
 					}
 				}
 			}
-			//bluring middle pixels
+			// Bluring middle pixels
 			if (y > 0 && y < (SIZE - 1) && x > 0 && x < (SIZE - 1))
 			{
 				div = 9.0;
@@ -193,7 +214,7 @@ void blur()
 					}
 				}
 			}
-			//bluring bottom edges
+			// Bluring bottom edges
 			if (y > 0 && y < (SIZE - 1) && x == (SIZE - 1))
 			{
 				div = 6.0;
@@ -219,4 +240,8 @@ void blur()
 		}
 
 	}
+<<<<<<< HEAD
 }
+=======
+}	
+>>>>>>> origin
