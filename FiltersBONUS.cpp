@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <algorithm>
 #include <math.h>
 #include <regex>
 #include <string>
@@ -14,6 +15,7 @@ unsigned char new_image[SIZE][SIZE][RGB];
 void loadImage(unsigned char image[][SIZE][RGB]);
 void saveImage(unsigned char saved_image[][SIZE][RGB]);
 void blur();
+void darkenlighten(string choice);
 
 
 int main()
@@ -30,6 +32,28 @@ int main()
         loadImage(image);
         blur();
         saveImage(new_image);
+        return 0;
+	}
+	else if (filter == "5")
+    {
+        string answer;
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        cout << "(D)arken or (L)ighten the image: ";
+        getline(cin, answer);
+		cin.ignore(0);
+		// Transforming the whole string to lowercase to accept any form of the char D and l.
+        transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+        if (answer == "d" || answer == "l")
+        {
+            darkenlighten(answer);
+            saveImage(image);
+        }
+        else
+        {
+            cout << "Sorry, unexpected input.";
+            return 1;
+        }
         return 0;
 	}
 	else
@@ -64,6 +88,38 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
     writeRGBBMP(imageFileName, saved_image);
+}
+
+void darkenlighten(string choice)
+{
+    if (choice == "d")
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int r = 0; r < 3; ++r)
+				{
+					image[i][j][r] -= image[i][j][r] * (0.5);
+				}
+            }
+        }
+    }
+    else if (choice == "l")
+    {
+        float light = 0;
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int r = 0; r < 3; ++r)
+				{
+					light = abs(image[i][j][r] - 255);
+                	image[i][j][r] += light / 2.0;
+				}
+            }
+        }
+    }
 }
 
 // Blur image
