@@ -12,12 +12,14 @@ using namespace std;
 
 unsigned char image[SIZE][SIZE][RGB];
 unsigned char new_image[SIZE][SIZE][RGB];
+unsigned char secondImage[SIZE][SIZE][RGB];
 void loadImage(unsigned char image[][SIZE][RGB]);
 void saveImage(unsigned char saved_image[][SIZE][RGB]);
 void blur();
 void darkenlighten(string choice);
 int& parse_valid_input(string str, int& dimension);
 void shrink(int dimension);
+void merge();
 
 int main()
 {
@@ -37,6 +39,15 @@ int main()
         saveImage(new_image);
         return 0;
 	}
+	else if (filter == "3")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        cout << "Enter the source second image file name: ";
+        loadImage(secondImage);
+        merge();
+        saveImage(image);
+	}    
 	else if (filter == "5")
     {
         string answer;
@@ -237,6 +248,20 @@ void darkenlighten(string choice)
                 	image[i][j][r] += light / 2.0;
 				}
             }
+        }
+    }
+}
+
+void merge()
+{
+    for (int i = 0; i < SIZE; ++i)
+    {
+        for (int j = 0; j < SIZE; ++j)
+        {
+			for (int y = 0; y < 3; ++y)
+			{
+				image[i][j][0] = (image[i][j][0] + secondImage[i][j][0]) / 2.0;
+			}  
         }
     }
 }
