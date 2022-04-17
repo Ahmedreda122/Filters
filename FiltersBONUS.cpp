@@ -17,7 +17,7 @@ unsigned char secondImage[SIZE][SIZE][RGB];
 void loadImage(unsigned char image[][SIZE][RGB]);
 void saveImage(unsigned char saved_image[][SIZE][RGB]);
 void blur();
-void darkenlighten(string choice);
+void darkenblack_levelen(string choice);
 int& parse_valid_input(string str, int& dimension);
 void shrink(int dimension);
 void merge();
@@ -27,7 +27,7 @@ int main()
   	string filter;
 	int dimension = 0;
     string dimensionStr;
-	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
+	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and black_levelen\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 	// Getting the input from the user
 	getline(cin, filter);
 	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
@@ -63,7 +63,7 @@ int main()
         transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
         if (answer == "d" || answer == "l")
         {
-            darkenlighten(answer);
+            darkenblack_levelen(answer);
             saveImage(image);
         }
         else
@@ -224,16 +224,19 @@ int& parse_valid_input(string str, int& dimension)
 
 }
 
-void darkenlighten(string choice)
+void darkenblack_levelen(string choice)
 {
     if (choice == "d")
     {
+		// Looping after pixels
         for (int i = 0; i < SIZE; ++i)
         {
             for (int j = 0; j < SIZE; ++j)
             {
+				// Looping after RGB colours
 				for (int r = 0; r < 3; ++r)
 				{
+					// Decreasing light level by 50%
 					image[i][j][r] -= image[i][j][r] * (0.5);
 				}
             }
@@ -241,15 +244,19 @@ void darkenlighten(string choice)
     }
     else if (choice == "l")
     {
-        float light = 0;
+		// Defining black_level that is equal to 255 - light_level(pixel value)
+        float black_level = 0;
         for (int i = 0; i < SIZE; ++i)
         {
             for (int j = 0; j < SIZE; ++j)
             {
 				for (int r = 0; r < 3; ++r)
 				{
-					light = abs(image[i][j][r] - 255);
-                	image[i][j][r] += light / 2.0;
+					/* Getting black level of each colour by applying the formula "255 - light_level of each colour(pixel value) = black_level"
+					'Cause if white pixel value = 255 so if we minus 255 by white pixel value(which is 255) it give zero and this is what we want */
+					black_level = 255 - image[i][j][r];
+					// Dereasing black_level of each colour by 50% by increasing light_level(pixel_value) by 50% of black_level
+                	image[i][j][r] += black_level / 2.0;
 				}
             }
         }
