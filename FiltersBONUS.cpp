@@ -10,6 +10,7 @@
 
 using namespace std;
 
+// Defining the functions in the program so main function can recognize them.
 unsigned char image[SIZE][SIZE][RGB];
 unsigned char new_image[SIZE][SIZE][RGB];
 unsigned char secondImage[SIZE][SIZE][RGB];
@@ -27,11 +28,13 @@ int main()
 	int dimension = 0;
     string dimensionStr;
 	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
-
+	// Getting the input from the user
 	getline(cin, filter);
+	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
+	filter.erase(remove_if(filter.begin(), filter.end(), ::isspace), filter.end());
 	cin.ignore(0);
 
-	if (filter == "c")
+	if (filter == "c" || filter == "C")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -210,7 +213,7 @@ int& parse_valid_input(string str, int& dimension)
     // Returning True if the input string was like the form we just make, False otherwise
     if (regex_match(str, isValidInput))
     {
-        char d[1] = { str[2] };
+        char d[1] = {str[2]};
         dimension = atoi(d);
         return dimension;
     }
