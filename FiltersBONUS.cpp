@@ -16,11 +16,14 @@ void loadImage(unsigned char image[][SIZE][RGB]);
 void saveImage(unsigned char saved_image[][SIZE][RGB]);
 void blur();
 void darkenlighten(string choice);
-
+int& parse_valid_input(string str, int& dimension);
+void shrink(int dimension);
 
 int main()
 {
   	string filter;
+	int dimension = 0;
+    string dimensionStr;
 	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 
 	getline(cin, filter);
@@ -56,6 +59,21 @@ int main()
         }
         return 0;
 	}
+	else if (filter == "9")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        while (dimension == 0)
+        {
+            cout << "Shrink to (1/2), (1/3) or (1/4)?\nPlease, Enter the input on form a/b: ";
+            getline(cin, dimensionStr);
+            parse_valid_input(dimensionStr, dimension);
+            cin.ignore(0);
+        }
+        shrink(dimension);
+        saveImage(image);
+        return 0;
+    }
 	else
 	{
 		cout << "Wrong input, try again.";
@@ -88,6 +106,107 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
     writeRGBBMP(imageFileName, saved_image);
+}
+
+void shrink(int dimension)
+{
+    unsigned char neww_image[SIZE][SIZE][RGB];
+    int counter = 0;
+
+	// Variables for storing averages of colours
+	double AVG_red = 0;
+	double AVG_green = 0;
+	double AVG_blue = 0;
+	
+
+    for (int i = 0; i < SIZE; ++i)
+    {
+        for (int j = 0; j < (SIZE / dimension); ++j)
+        {
+            for (int c = counter; c < (counter + dimension); ++c)
+            {
+				AVG_red += image[i][c][0];
+				AVG_green += image[i][c][1];
+				AVG_blue +=  image[i][c][2];
+            }
+            neww_image[i][j][0] = (AVG_red / dimension);
+			neww_image[i][j][1] = (AVG_green / dimension);
+			neww_image[i][j][2] = (AVG_blue / dimension);
+			// Resetting the average to its primary value
+			AVG_red = 0;
+			AVG_green = 0;
+			AVG_blue = 0;
+            counter += dimension;
+        }
+        counter = 0;
+    }
+
+    counter = 0;
+	// Resetting the average to its primary value
+	AVG_red = 0;
+	AVG_green = 0;
+	AVG_blue = 0;
+
+    for (int i = 0; i < SIZE / dimension; ++i)
+    {
+        for (int j = 0; j < SIZE / dimension; ++j)
+        {
+            for (int c = counter; c < (counter + dimension); ++c)
+            {
+                AVG_red += neww_image[c][j][0];
+				AVG_green += neww_image[c][j][1];
+				AVG_blue +=  neww_image[c][j][2];
+            }
+            new_image[i][j][0] = (AVG_red / dimension);
+			new_image[i][j][1] = (AVG_green / dimension);
+			new_image[i][j][2] = (AVG_blue / dimension);
+			// Resetting the average to its primary value
+			AVG_red = 0;
+			AVG_green = 0;
+			AVG_blue = 0;
+        }
+        counter += dimension;
+    }
+
+
+    for (int x = 0; x < SIZE; x++)
+    {
+        for (int y = 0; y < SIZE; y++)
+        {
+            if (x < (SIZE / dimension) && y < (SIZE / dimension))
+            {
+                image[x][y][0] = new_image[x][y][0];
+				image[x][y][1] = new_image[x][y][1];
+				image[x][y][2] = new_image[x][y][2];
+            }
+            else
+            {
+                image[x][y][0] = 255;
+				image[x][y][1] = 255;
+				image[x][y][2] = 255;
+            }
+
+        }
+    }
+
+}
+
+int& parse_valid_input(string str, int& dimension)
+{
+    // Making a form for input rational number using regular expressions
+    regex isValidInput("(1/[2-4])");
+    // Returning True if the input string was like the form we just make, False otherwise
+    if (regex_match(str, isValidInput))
+    {
+        char d[1] = { str[2] };
+        dimension = atoi(d);
+        return dimension;
+    }
+    else
+    {
+        return dimension;
+    }
+
 }
 
 void darkenlighten(string choice)
@@ -128,9 +247,9 @@ void blur()
 	// The divisor
 	float div;
 	// The Average of colours
-	int Avred;
-	int Avgreen;
-	int Avblue;
+	int AVG_red;
+	int AVG_green;
+	int AVG_blue;
 
 	// Looping over the image pixels
 	for (int x = 0; x < SIZE; x++)
@@ -138,9 +257,9 @@ void blur()
 		for (int y = 0; y < SIZE; y++)
 		{
 			// Variables for storing averages of colours
-			Avred = 0;
-			Avgreen = 0;
-			Avblue = 0;
+			AVG_red = 0;
+			AVG_green = 0;
+			AVG_blue = 0;
 			// Bluring the top left corner
 			if ((x == 0) && (y == 0))
 			{
@@ -150,9 +269,9 @@ void blur()
 				{
 					for (int m = y; m <= y + 1; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 					}
 				}
 			}
@@ -165,9 +284,9 @@ void blur()
 				{
 					for (int m = y - 1; m <= y + 1; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 					}
 				}
 
@@ -181,9 +300,9 @@ void blur()
 				{
 					for (int m = y - 1; m <= y; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 					}
 				}
 			}
@@ -196,9 +315,9 @@ void blur()
 				{
 					for (int m = y; m <= y + 1; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 					}
 				}
 			}
@@ -211,9 +330,9 @@ void blur()
 				{
 					for (int m = y - 1; m <= y ; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 					}
 				}
 			}
@@ -226,9 +345,9 @@ void blur()
 				{
 					for (int m = y; m <= y + 1; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 					}
 				}
 			}
@@ -241,9 +360,9 @@ void blur()
 				{
 					for (int m = y - 1; m <= y; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 					}
 				}
 			}
@@ -256,9 +375,9 @@ void blur()
 				{
 					for (int  m = y - 1; m <= y + 1; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 
 					}
 				}
@@ -272,21 +391,21 @@ void blur()
 				{
 					for (int  m = y - 1; m <= y + 1; m++)
 					{
-						Avred = Avred + image[n][m][0];
-						Avgreen = Avgreen + image[n][m][1];
-						Avblue = Avblue + image[n][m][2];
+						AVG_red = AVG_red + image[n][m][0];
+						AVG_green = AVG_green + image[n][m][1];
+						AVG_blue = AVG_blue + image[n][m][2];
 
 					}
 				}
 			}
 			// Advantage RGB colours
-			Avred = round(Avred / div);
-			Avgreen = round(Avgreen / div);
-			Avblue = round(Avblue / div);
+			AVG_red = round(AVG_red / div);
+			AVG_green = round(AVG_green / div);
+			AVG_blue = round(AVG_blue / div);
 			// Storing the average value in new_image variable to blur the pixel.
-			new_image[x][y][0] = Avred;
-			new_image[x][y][1] = Avgreen;
-			new_image[x][y][2] = Avblue;
+			new_image[x][y][0] = AVG_red;
+			new_image[x][y][1] = AVG_green;
+			new_image[x][y][2] = AVG_blue;
 		}
 
 	}
