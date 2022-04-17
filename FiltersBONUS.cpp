@@ -18,39 +18,39 @@ void blur();
 
 int main()
 {
-  	string filter; 
+	string filter; 
 	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 
 	getline(cin, filter);
 	cin.ignore(0);
 
 	if (filter == "c")
-    {
-        cout << "Enter the source image file name: ";
-        loadImage(image);
-        blur();
-        saveImage(new_image);
-        return 0;
+	{
+		cout << "Enter the source image file name: ";
+		loadImage(image);
+		blur();
+		saveImage(new_image);
+		return 0;
 	}
 	else
 	{
 		cout << "Wrong input, try again.";
-        return 1;
+		return 1;
 	}	
 
 }
 
 void loadImage(unsigned char image[][SIZE][RGB])
 {
-    char imageFileName[100];
+	char imageFileName[100];
 
-    // Get colored image file name
-    cin >> imageFileName;
+	// Get colored image file name
+	cin >> imageFileName;
 	cin.ignore();
 
-    // Add to it .bmp extension and load image
-    strcat(imageFileName, ".bmp");
-    readRGBBMP(imageFileName, image);
+	// Add to it .bmp extension and load image
+	strcat(imageFileName, ".bmp");
+	readRGBBMP(imageFileName, image);
 }
 
 void saveImage(unsigned char saved_image[][SIZE][RGB])
