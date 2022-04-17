@@ -21,8 +21,7 @@ int main()
   	string filter; 
 	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 
-	getline(cin,filter);
-	cin.clear();
+	getline(cin, filter);
 	cin.ignore();
 
 	if (filter == "c")
