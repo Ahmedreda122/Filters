@@ -134,7 +134,7 @@ void shrink(int dimension)
     {
         for (int j = 0; j < (SIZE / dimension); ++j)
         {
-			// Taking pixels by number of dimension then shrink it into one pixel by taking the average of them horizontally
+			// Looping after every row to get every 2 pixels (for example (it can be 2 or 3 or 4 based on dimension value)) in it then shrink it into one pixel by taking the average of them horizontally
             for (int c = counter; c < (counter + dimension); ++c)
             {
 				AVG_red += image[i][c][0];
@@ -149,28 +149,25 @@ void shrink(int dimension)
 			AVG_red = 0;
 			AVG_green = 0;
 			AVG_blue = 0;
+			// Updating counter to move to next 2 (for example) pixels in the row
             counter += dimension;
         }
 		// Resetting counter to shrink next row
         counter = 0;
     }
 
-    counter = 0;
-	// Resetting the average to its primary value
-	AVG_red = 0;
-	AVG_green = 0;
-	AVG_blue = 0;
-
     for (int i = 0; i < SIZE / dimension; ++i)
     {
         for (int j = 0; j < SIZE / dimension; ++j)
         {
+			// Looping after every column in shrinked neww_image to get every 2 pixels (it can be 2 or 3 or 4 based on dimension value) in it then shrink it into one pixel by taking the average of them vertically
             for (int c = counter; c < (counter + dimension); ++c)
             {
                 AVG_red += neww_image[c][j][0];
 				AVG_green += neww_image[c][j][1];
 				AVG_blue +=  neww_image[c][j][2];
             }
+			// Storing shrinked pixels in new_image
             new_image[i][j][0] = (AVG_red / dimension);
 			new_image[i][j][1] = (AVG_green / dimension);
 			new_image[i][j][2] = (AVG_blue / dimension);
@@ -179,10 +176,11 @@ void shrink(int dimension)
 			AVG_green = 0;
 			AVG_blue = 0;
         }
+		// Updating counter to move to next 2 (for example) pixels in the colum
         counter += dimension;
     }
 
-
+	// Updating the original image to be the shrinked one (new_image) and every pixel not in shrinked photo will be white pixel
     for (int x = 0; x < SIZE; x++)
     {
         for (int y = 0; y < SIZE; y++)
@@ -257,13 +255,14 @@ void darkenlighten(string choice)
 
 void merge()
 {
+	// Looping after every pixel then update it with average of the corresponding pixels in the two images to merge them
     for (int i = 0; i < SIZE; ++i)
     {
         for (int j = 0; j < SIZE; ++j)
         {
 			for (int y = 0; y < 3; ++y)
 			{
-				image[i][j][0] = (image[i][j][0] + secondImage[i][j][0]) / 2.0;
+				image[i][j][y] = (image[i][j][y] + secondImage[i][j][y]) / 2.0;
 			}  
         }
     }
