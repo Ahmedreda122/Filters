@@ -3,6 +3,7 @@
 #include <cstring>
 #include <math.h>
 #include <regex> 
+#include <algorithm>
 #include <string>
 #include "bmplib.cpp"
 

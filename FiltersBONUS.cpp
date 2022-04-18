@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <math.h>
 #include <regex>
-#include <string>
 #include "bmplib.cpp"
 
 using namespace std;
@@ -29,7 +28,7 @@ int main()
 
 	int dimension = 0;
     string dimensionStr;
-	
+
 	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and black_levelen\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 	// Getting the input from the user
 	getline(cin, filter);
