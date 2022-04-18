@@ -15,7 +15,7 @@ unsigned char new_image[SIZE][SIZE];
 
 // Defining the functions in the program so main function can recognize them.
 void loadImage(unsigned char image[][SIZE]);
-void saveImage();
+void saveImage(unsigned char saved_image[][SIZE])
 void blur();
 void darkenlighten(string choice);
 void merge();
@@ -29,7 +29,7 @@ void enlarge_image();
 void shuffle_image();
 void rotate_image();
 void invert_image();
-void black_white();
+void black_white_filter();
 
 int main()
 {
@@ -50,8 +50,8 @@ int main()
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
-        black_white();
-        saveImage();
+        black_white_filter();
+        saveImage(image);
         return 0;
     }
     else if (filter == "2")
@@ -59,7 +59,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         invert_image();
-        saveImage();
+        saveImage(new_image);
         return 0;
     }
     else if (filter == "3")
@@ -69,7 +69,7 @@ int main()
         cout << "Enter the source second image file name: ";
         loadImage(secondImage);
         merge();
-        saveImage();
+        saveImage(image);
         return 0;
     }
     else if (filter == "4")
@@ -77,7 +77,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         // flip();
-        saveImage();
+        saveImage(image);
         return 0;
     }
     else if (filter == "5")
@@ -107,7 +107,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         rotate_image();
-        saveImage();
+        saveImage(new_image);
         return 0;
     }
     else if (filter == "7")
@@ -115,7 +115,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         // edge();
-        saveImage();
+        saveImage(image);
         return 0;
     }
     else if (filter == "8")
@@ -123,7 +123,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         enlarge_image();
-        saveImage();
+        saveImage(new_image);
         return 0;
     }
     else if (filter == "9")
@@ -140,7 +140,7 @@ int main()
             cin.ignore(0);
         }
         shrink(dimension);
-        saveImage();
+        saveImage(image);
         return 0;
     }
     else if (filter == "a" || filter == "A")
@@ -148,7 +148,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         // mirror ()
-        saveImage();
+        saveImage(image);
         return 0;
     }
     else if (filter == "b" || filter == "B")
@@ -156,7 +156,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         shuffle_image();
-        saveImage();
+        saveImage(new_image);
         return 0;
     }
     else if (filter == "c" || filter == "C")
@@ -164,7 +164,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         blur();
-        saveImage();
+        saveImage(new_image);
         return 0;
     }
     else if (filter == "0")
@@ -193,7 +193,7 @@ void loadImage(unsigned char image[][SIZE])
 }
 
 //_________________________________________
-void saveImage()
+void saveImage(unsigned char saved_image[][SIZE])
 {
     char imageFileName[100];
 
@@ -203,7 +203,7 @@ void saveImage()
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    writeGSBMP(imageFileName, image);
+    writeGSBMP(imageFileName, saved_image);
 }
 
 void blur()
@@ -331,19 +331,8 @@ void blur()
             avg = round(avg / q);
             //storing the average value in new_image variable
             new_image[x][y] = avg;
-
-        }
-
-    }
-    //converting the current pixels to blured ones
-    for (int x = 0; x < SIZE; x++)
-    {
-        for (int y = 0; y < SIZE; y++)
-        {
-            image[x][y] = new_image[x][y];
         }
     }
-
 }
 
 void merge()
@@ -376,7 +365,7 @@ void darkenlighten(string choice)
         {
             for (int j = 0; j < SIZE; ++j)
             {
-                light = abs(image[i][j] - 255);
+                light = 255 - image[i][j];
                 image[i][j] += light / 2.0;
             }
         }
@@ -386,7 +375,6 @@ void darkenlighten(string choice)
 
 void shrink(int dimension)
 {
-    unsigned char new_image[SIZE][SIZE];
     unsigned char neww_image[SIZE][SIZE];
     int counter = 0;
     double avg = 0;
@@ -405,9 +393,6 @@ void shrink(int dimension)
         }
         counter = 0;
     }
-
-    counter = 0;
-    avg = 0;
 
     for (int i = 0; i < SIZE / dimension; ++i)
     {
@@ -449,7 +434,7 @@ int& parseValidInput(string str, int& dimension)
     //Returning True if the input string was like the form we just make, False otherwise
     if (regex_match(str, isValidInput))
     {
-        char d[1] = { str[2] };
+        char d[1] = {str[2]};
         dimension = atoi(d);
         return dimension;
     }
@@ -694,14 +679,20 @@ void invert_image()
     }
 }
 
-void black_white() {
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-
+void black_white_filter()
+{
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
             if (image[i][j] > 127)
+            {
                 image[i][j] = 255;
+            }
             else
+            {
                 image[i][j] = 0;
+            }
         }
     }
 }
