@@ -10,10 +10,11 @@
 
 using namespace std;
 
-// Defining the functions in the program so main function can recognize them.
 unsigned char image[SIZE][SIZE][RGB];
 unsigned char new_image[SIZE][SIZE][RGB];
 unsigned char secondImage[SIZE][SIZE][RGB];
+
+// Defining the functions in the program so main function can recognize them.
 void loadImage(unsigned char image[][SIZE][RGB]);
 void saveImage(unsigned char saved_image[][SIZE][RGB]);
 void blur();
@@ -25,8 +26,10 @@ void merge();
 int main()
 {
   	string filter;
+
 	int dimension = 0;
     string dimensionStr;
+	
 	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and black_levelen\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 	// Getting the input from the user
 	getline(cin, filter);
@@ -86,6 +89,10 @@ int main()
         }
         shrink(dimension);
         saveImage(image);
+        return 0;
+    }
+	else if (filter == "0")
+    {
         return 0;
     }
 	else

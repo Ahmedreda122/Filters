@@ -12,10 +12,11 @@ unsigned char image[SIZE][SIZE];
 unsigned char secondImage[SIZE][SIZE];
 unsigned char new_image[SIZE][SIZE];
 
+// Defining the functions in the program so main function can recognize them.
 void loadImage(unsigned char image[][SIZE]);
 void saveImage();
 void blur();
-void darkenlighten(char choice);
+void darkenlighten(string choice);
 void merge();
 void shrink(int dimension);
 int& parseValidInput(string str, int& dimension);
@@ -31,18 +32,20 @@ void black_white();
 
 int main()
 {
-    char filter;
+    string filter;
 
     int dimension = 0;
     string dimensionStr;
 
     cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 
-    cin >> filter;
-    cin.clear();
-    cin.ignore();
+	// Getting the input from the user
+	getline(cin, filter);
+	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
+	filter.erase(remove_if(filter.begin(), filter.end(), ::isspace), filter.end());
+	cin.ignore(0);
 
-    if (filter == '1')
+    if (filter == "1")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -50,7 +53,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '2')
+    else if (filter == "2")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -58,7 +61,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '3')
+    else if (filter == "3")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -68,7 +71,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '4')
+    else if (filter == "4")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -76,17 +79,20 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '5')
+    else if (filter == "5")
     {
-        char answer;
+        string answer;
         cout << "Enter the source image file name: ";
         loadImage(image);
         cout << "(D)arken or (L)ighten the image: ";
-        answer = (char)tolower(answer);
-        if (answer == 'd' || answer == 'l')
+        getline(cin, answer);
+		cin.ignore(0);
+		// Transforming the whole string to lowercase to accept any form of the char D and l.
+        transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+        if (answer == "d" || answer == "l")
         {
             darkenlighten(answer);
-            saveImage();
+            saveImage(image);
         }
         else
         {
@@ -95,7 +101,7 @@ int main()
         }
         return 0;
     }
-    else if (filter == '6')
+    else if (filter == "6")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -103,7 +109,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '7')
+    else if (filter == "7")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -111,7 +117,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '8')
+    else if (filter == "8")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -119,7 +125,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '9')
+    else if (filter == "9")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -136,7 +142,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == 'a')
+    else if (filter == "a" || filter == "A")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -144,7 +150,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == 'b')
+    else if (filter == "b" || filter == "B")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -152,7 +158,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == 'c')
+    else if (filter == "c" || filter == "C")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -160,7 +166,7 @@ int main()
         saveImage();
         return 0;
     }
-    else if (filter == '0')
+    else if (filter == "0")
     {
         return 0;
     }
@@ -178,6 +184,7 @@ void loadImage(unsigned char image[][SIZE])
 
     // Get gray scale image file name
     cin >> imageFileName;
+	cin.ignore();
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
@@ -200,8 +207,6 @@ void saveImage()
 
 void blur()
 {
-    // blured pixel
-    unsigned char new_image[SIZE][SIZE];
     float q;
     // the average of colour
     float avg = 0;
@@ -351,7 +356,7 @@ void merge()
     }
 }
 
-void darkenlighten(char choice)
+void darkenlighten(string choice)
 {
     if (choice == 'd')
     {
