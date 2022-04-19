@@ -130,7 +130,7 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
 
 void shrink(int dimension)
 {
-	// Creating an RGB image for to store horizontally shrinked horiginal image version 
+	// Creating an RGB image for to store horizontally shrinked original image version 
     unsigned char neww_image[SIZE][SIZE][RGB];
 	// Counter for looping after every (dimension value) pixels each time 
     int counter = 0;
@@ -186,11 +186,11 @@ void shrink(int dimension)
 			AVG_green = 0;
 			AVG_blue = 0;
         }
-		// Updating counter to move to next 2 (for example) pixels in the colum
+		// Updating counter to move to next 2 (for example) pixels in the columns
         counter += dimension;
     }
 
-	// Updating the original image to be the shrinked one (new_image) and every pixel not in shrinked photo will be white pixel
+	// Updating the original image to the shrinked one (new_image) and every pixel not in shrinked photo will be white pixel
     for (int x = 0; x < SIZE; x++)
     {
         for (int y = 0; y < SIZE; y++)
@@ -456,6 +456,5 @@ void blur()
 			new_image[x][y][1] = AVG_green;
 			new_image[x][y][2] = AVG_blue;
 		}
-
 	}
 }
