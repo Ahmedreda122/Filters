@@ -189,7 +189,13 @@ void loadImage(unsigned char image[][SIZE])
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    readGSBMP(imageFileName, image);
+
+    // Check if the bitmap image exist or not, If not Ask for another image
+    if (readGSBMP(imageFileName, image) == 1)
+    {
+        cout << "\nPlease, Try again: ";
+        loadImage(image);
+    }
 }
 
 //_________________________________________
