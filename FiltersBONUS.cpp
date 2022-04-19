@@ -305,7 +305,7 @@ void blur()
 	{
 		for (int y = 0; y < SIZE; y++)
 		{
-			// Variables for storing averages of colours
+			// Resetting averages of colours to its primary value
 			AVG_red = 0;
 			AVG_green = 0;
 			AVG_blue = 0;

@@ -15,7 +15,7 @@ unsigned char new_image[SIZE][SIZE];
 
 // Defining the functions in the program so main function can recognize them.
 void loadImage(unsigned char image[][SIZE]);
-void saveImage(unsigned char saved_image[][SIZE])
+void saveImage(unsigned char saved_image[][SIZE]);
 void blur();
 void darkenlighten(string choice);
 void merge();
@@ -208,19 +208,24 @@ void saveImage(unsigned char saved_image[][SIZE])
 
 void blur()
 {
-    float q;
-    // the average of colour
+    // The divisor
+    float div;
+    // The Average of colour
     float avg = 0;
 
+    // Looping over the image pixels
     for (int x = 0; x < SIZE; x++)
     {
         for (int y = 0; y < SIZE; y++)
         {
+            // Resetting average of colour to its primary value
             avg = 0;
-            //bluring the left corner
+
+            // Bluring the top left corner
             if ((x == 0) && (y == 0))
             {
-                q = 4.0;
+                div = 4.0;
+                // Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colour of them to store it in the blurred first pixel 
                 for (int n = x; n <= x + 1; n++)
                 {
                     for (int m = y; m <= y + 1; m++)
@@ -232,7 +237,7 @@ void blur()
             //bluring top pixel's edge
             if ((x == 0) && (y > 0) && (y < (SIZE - 1)))
             {
-                q = 6.0;
+                div = 6.0;
                 for (int n = x; n <= x + 1; n++)
                 {
                     for (int m = y - 1; m <= y + 1; m++)
@@ -246,7 +251,7 @@ void blur()
             //bluring the right corner
             if ((x == 0) && (y == SIZE - 1))
             {
-                q = 4.0;
+                div = 4.0;
                 for (int n = x; n <= x + 1; n++)
                 {
                     for (int m = y - 1; m <= y; m++)
@@ -258,7 +263,7 @@ void blur()
             //bluring left edges
             if ((x > 0) && (y == 0) && (x < SIZE - 1))
             {
-                q = 6.0;
+                div = 6.0;
                 for (int n = x - 1; n <= x + 1; n++)
                 {
                     for (int m = y; m <= y + 1; m++)
@@ -270,7 +275,7 @@ void blur()
             //bluring right edges
             if ((x > 0) && (y == SIZE - 1) && (x < SIZE - 1))
             {
-                q = 6.0;
+                div = 6.0;
                 for (int n = x - 1; n <= x + 1; n++)
                 {
                     for (int m = y - 1; m <= y; m++)
@@ -282,7 +287,7 @@ void blur()
             //bluring another left corner
             if ((x == (SIZE - 1)) && (y == 0))
             {
-                q = 4.0;
+                div = 4.0;
                 for (int n = x - 1; n <= x; n++)
                 {
                     for (int m = y; m <= y + 1; m++)
@@ -294,7 +299,7 @@ void blur()
             //bluring another right corner
             if ((x == (SIZE - 1)) && (y == (SIZE - 1)))
             {
-                q = 4.0;
+                div = 4.0;
                 for (int n = x - 1; n <= x; n++)
                 {
                     for (int m = y - 1; m <= y; m++)
@@ -306,7 +311,7 @@ void blur()
             //bluring middle pixels
             if (y > 0 && y < (SIZE - 1) && x > 0 && x < (SIZE - 1))
             {
-                q = 9.0;
+                div = 9.0;
                 for (int n = x - 1; n <= x + 1; n++)
                 {
                     for (int m = y - 1; m <= y + 1; m++)
@@ -318,7 +323,7 @@ void blur()
             //bluring bottom edges
             if (y > 0 && y < (SIZE - 1) && x == (SIZE - 1))
             {
-                q = 6.0;
+                div = 6.0;
                 for (int n = x - 1; n <= x; n++)
                 {
                     for (int m = y - 1; m <= y + 1; m++)
@@ -328,7 +333,7 @@ void blur()
                 }
             }
             // Advantage RGB colours
-            avg = round(avg / q);
+            avg = round(avg / div);
             //storing the average value in new_image variable
             new_image[x][y] = avg;
         }
@@ -348,7 +353,7 @@ void merge()
 
 void darkenlighten(string choice)
 {
-    if (choice == 'd')
+    if (choice == "d")
     {
         for (int i = 0; i < SIZE; ++i)
         {
@@ -358,7 +363,7 @@ void darkenlighten(string choice)
             }
         }
     }
-    else if (choice == 'l')
+    else if (choice == "l")
     {
         float light = 0;
         for (int i = 0; i < SIZE; ++i)
