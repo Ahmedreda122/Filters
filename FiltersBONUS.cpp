@@ -27,6 +27,7 @@ void enlarge_image3();
 void enlarge_image4();
 void enlarge_image();
 void shuffle_image();
+void rotate_image();
 
 
 
@@ -84,7 +85,15 @@ int main()
         }
         return 0;
 	}
-	    else if (filter == "8")
+	else if (filter == "6")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        rotate_image();
+        saveImage(new_image);
+        return 0;
+    }
+	else if (filter == "8")
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
@@ -673,3 +682,49 @@ void shuffle_image() {
 
 
 // -------------------------------------------------------------------
+
+void rotate_image()
+{
+    int degree;
+    cout << "Ahlan ya Am El-User...\n";
+    cout << "Rotate image:(1 | 2 | 3) \n";
+    cout << " 1- 90 deg Right \n 2- 90 deg Left \n 3- 180 deg \n>>> ";
+    cin >> degree;
+
+    if (degree == 1)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int k=0 ; k < RGB;++k){
+                	new_image[i][j][k] = image[255 - j][i][k];
+				}
+            }
+        }
+    }
+    else if (degree == 2)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int k=0 ; k < RGB;++k){
+                	new_image[i][j][k] = image[j][255 - i][k];
+				}
+            }
+        }
+    }
+    else if (degree == 3)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int k=0 ; k < RGB;++k){
+                	new_image[i][j][k] = image[255 - i][255 - j][k];
+				}
+            }
+        }
+    }
+}

@@ -599,22 +599,22 @@ void shuffle_image() {
     for (int i = 0; i <= 128; ++i) {
         for (int j = 129; j <= 256; ++j) {
 
-            if (a == 2) {
-                x = i;
-                y = j - 129;
-            }
-            else if (b == 2) {
-                x = i;
-                y = j;
-            }
-            else if (c == 2) {
-                x = i + 128;
-                y = j - 129;
-            }
-            else if (d == 2) {
-                x = i + 128;
-                y = j;
-            }
+			if (a == 2) {
+				x = i;
+				y = j - 128;
+			}
+			else if (b == 2) {
+				x = i;
+				y = j;
+			}
+			else if (c == 2) {
+				x = i + 128;
+				y = j - 129;
+			}
+			else if (d == 2) {
+				x = i + 128;
+				y = j;
+			}
 
             new_image[x][y] = image[i][j];
         }
@@ -622,22 +622,23 @@ void shuffle_image() {
     //third
     for (int i = 129; i <= 256; ++i) {
         for (int j = 0; j <= 128; ++j) {
-            if (a == 3) {
-                x = i - 129;
-                y = j;
-            }
-            else if (b == 3) {
-                x = i - 129;
-                y = j + 128;
-            }
-            else if (c == 3) {
-                x = i;
-                y = j;
-            }
-            else if (d == 4) {
-                x = i;
-                y = j + 128;
-            }
+
+			if (a == 3) {
+				x = i - 129;
+				y = j;
+			}
+			else if (b == 3) {
+				x = i - 129;
+				y = j + 128;
+			}
+			else if (c == 3) {
+				x = i;
+				y = j;
+			}
+			else if (d == 3) {
+				x = i;
+				y = j + 128;
+			}
             new_image[x][y] = image[i][j];
         }
     }
