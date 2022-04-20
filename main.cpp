@@ -130,8 +130,6 @@ int main()
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
-        cin.clear();
-        cin.ignore();
         while (dimension == 0)
         {
             cout << "Shrink to (1/2), (1/3) or (1/4)?\nPlease, Enter the input on form a/b: ";

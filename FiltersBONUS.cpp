@@ -31,8 +31,6 @@ void rotate_image();
 void invert_image();
 
 
-
-
 int main()
 {
   	string filter;
@@ -40,7 +38,7 @@ int main()
 	int dimension = 0;
     string dimensionStr;
 
-	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and black_levelen\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
+	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 	// Getting the input from the user
 	getline(cin, filter);
 	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
@@ -155,7 +153,13 @@ void loadImage(unsigned char image[][SIZE][RGB])
 
 	// Add to it .bmp extension and load image
 	strcat(imageFileName, ".bmp");
-	readRGBBMP(imageFileName, image);
+
+	// Check if the bitmap image exist or not, If not Ask for another image
+    if (readRGBBMP(imageFileName, image) == 1)
+    {
+        cout << "\nPlease, Try again: ";
+        loadImage(image);
+    }
 }
 
 void saveImage(unsigned char saved_image[][SIZE][RGB])
