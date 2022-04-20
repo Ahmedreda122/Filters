@@ -21,6 +21,15 @@ void darkenlighten(string choice);
 int& parse_valid_input(string str, int& dimension);
 void shrink(int dimension);
 void merge();
+void enlarge_image1();
+void enlarge_image2();
+void enlarge_image3();
+void enlarge_image4();
+void enlarge_image();
+void shuffle_image();
+
+
+
 
 int main()
 {
@@ -75,6 +84,14 @@ int main()
         }
         return 0;
 	}
+	    else if (filter == "8")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        enlarge_image();
+        saveImage(new_image);
+        return 0;
+    }
 	else if (filter == "9")
     {
         cout << "Enter the source image file name: ";
@@ -88,6 +105,14 @@ int main()
         }
         shrink(dimension);
         saveImage(image);
+        return 0;
+    }
+	else if (filter == "b" || filter == "B")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        shuffle_image();
+        saveImage(new_image);
         return 0;
     }
 	else if (filter == "0")
@@ -130,7 +155,7 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
 
 void shrink(int dimension)
 {
-	// Creating an RGB image for to store horizontally shrinked horiginal image version 
+	// Creating an RGB image for to store horizontally shrinked original image version 
     unsigned char neww_image[SIZE][SIZE][RGB];
 	// Counter for looping after every (dimension value) pixels each time 
     int counter = 0;
@@ -186,11 +211,11 @@ void shrink(int dimension)
 			AVG_green = 0;
 			AVG_blue = 0;
         }
-		// Updating counter to move to next 2 (for example) pixels in the colum
+		// Updating counter to move to next 2 (for example) pixels in the columns
         counter += dimension;
     }
 
-	// Updating the original image to be the shrinked one (new_image) and every pixel not in shrinked photo will be white pixel
+	// Updating the original image to the shrinked one (new_image) and every pixel not in shrinked photo will be white pixel
     for (int x = 0; x < SIZE; x++)
     {
         for (int y = 0; y < SIZE; y++)
@@ -456,6 +481,195 @@ void blur()
 			new_image[x][y][1] = AVG_green;
 			new_image[x][y][2] = AVG_blue;
 		}
-
 	}
 }
+
+// -------------------------------------------------------------------
+
+void  enlarge_image1() {
+    for (int i = 0; i <= 128; ++i) {
+        for (int j = 0; j <= 128; ++j) {
+			for (int k=0 ; k < RGB;++k){
+			new_image[i * 2][j * 2][k] = image[i][j][k];
+            new_image[(i * 2) + 1][j * 2][k] = image[i][j][k];
+            new_image[i * 2][(j * 2) + 1][k] = image[i][j][k];
+            new_image[(i * 2) + 1][(j * 2) + 1][k] = image[i][j][k];
+			}
+        }
+    }
+}
+
+void  enlarge_image2() {
+    for (int i = 0; i <= 128; ++i) {
+        for (int j = 128; j <= 255; ++j) {
+			for (int k=0 ; k < RGB;++k){
+				new_image[i * 2][((j - 128) * 2)][k] = image[i][j][k];
+				new_image[i * 2][((j - 128) * 2) + 1][k] = image[i][j][k];
+				new_image[(i * 2) + 1][((j - 128) * 2)][k] = image[i][j][k];
+				new_image[(i * 2) + 1][(((j - 128) * 2)) + 1][k] = image[i][j][k];
+			}
+        }
+    }
+}
+
+void  enlarge_image3() {
+    for (int i = 128; i <= 255; ++i) {
+        for (int j = 0; j <= 128; ++j) {
+			for (int k=0 ; k < RGB;++k){
+				new_image[((i - 128) * 2)][j * 2][k] = image[i][j][k];
+				new_image[((i - 128) * 2) + 1][j * 2][k] = image[i][j][k];
+				new_image[((i - 128) * 2)][(j * 2) + 1][k] = image[i][j][k];
+				new_image[(((i - 128) * 2)) + 1][(j * 2) + 1][k] = image[i][j][k];
+			}
+        }
+    }
+}
+
+void  enlarge_image4() {
+    for (int i = 128; i <= 255; ++i) {
+        for (int j = 128; j <= 255; ++j) {
+			for (int k=0 ; k < RGB;++k){
+				new_image[((i - 128) * 2)][((j - 128) * 2)][k] = image[i][j][k];
+				new_image[((i - 128) * 2) + 1][((j - 128) * 2) + 1][k] = image[i][j][k];
+				new_image[((i - 128) * 2)][((j - 128) * 2)][k] = image[i][j][k];
+				new_image[(((i - 128) * 2)) + 1][(((j - 128) * 2)) + 1][k] = image[i][j][k];
+			}
+        }
+    }
+}
+
+
+
+void enlarge_image() {
+    int option = 0;
+    cout << "Ahlan ya Am El-User...Which Part U Need zoom it?!...\n";
+    cout << " 1 | 2 \n 3 | 4 \n";
+    cin >> option;
+
+    if (option == 1) {
+        enlarge_image1();
+    }
+    else if (option == 2) {
+        enlarge_image2();
+    }
+    else if (option == 3) {
+        enlarge_image3();
+    }
+    else if (option == 4) {
+        enlarge_image4();
+    }
+    else {
+        cout << "Wrong choice!.." << " Try Again.." << endl;
+    }
+}
+// -------------------------------------------------------------------
+
+void shuffle_image() {
+
+    int a = 0, b = 0, c = 0, d = 0, x = 0, y = 0;
+    cout << "Ahlan ya Am El-User...\n";
+    cout << "How u sort the quarters?...\n";
+    cout << " 1 | 2 \n 3 | 4 \n";
+    cin >> a >> b >> c >> d;
+
+    //first
+    for (int i = 0; i <= 128; ++i) {
+        for (int j = 0; j <= 128; ++j) {
+			for (int k=0 ; k < RGB;++k){
+				if (a == 1) {
+					x = i;
+					y = j;
+				}
+				else if (b == 1) {
+					x = i;
+					y = j + 128;
+				}
+				else if (c == 1) {
+					x = i + 128;
+					y = j;
+				}
+				else if (d == 1) {
+					x = i + 128;
+					y = j + 128;
+				}
+				new_image[x][y][k] = image[i][j][k] ;
+			}
+        }
+    }
+    //second
+    for (int i = 0; i <= 128; ++i) {
+        for (int j = 129; j <= 256; ++j) {
+			for (int k=0 ; k < RGB;++k){
+				if (a == 2) {
+					x = i;
+					y = j - 128;
+				}
+				else if (b == 2) {
+					x = i;
+					y = j;
+				}
+				else if (c == 2) {
+					x = i + 128;
+					y = j - 129;
+				}
+				else if (d == 2) {
+					x = i + 128;
+					y = j;
+				}
+				new_image[x][y][k] = image[i][j][k] ;
+			}
+        }
+    }
+    //third
+    for (int i = 128; i <= 255; ++i) {
+        for (int j = 0; j <= 128; ++j) {
+			for (int k=0 ; k < RGB;++k){
+
+				if (a == 3) {
+					x = i - 129;
+					y = j;
+				}
+				else if (b == 3) {
+					x = i - 129;
+					y = j + 128;
+				}
+				else if (c == 3) {
+					x = i;
+					y = j;
+				}
+				else if (d == 3) {
+					x = i;
+					y = j + 128;
+				}
+				new_image[x][y][k] = image[i][j][k] ;
+			}
+        }
+    }
+
+    for (int i = 129; i <= 256; ++i) {
+        for (int j = 129; j <= 256; ++j) {
+			for (int k=0 ; k < RGB;++k){
+                if (a == 4) {
+                    x = i - 129;
+                    y = j - 129;
+                }
+                else if (b == 4) {
+                    x = i - 129;
+                    y = j;
+                }
+                else if (c == 4) {
+                    x = i;
+                    y = j - 129;
+                }
+                else if (d == 4) {
+                    x = i;
+                    y = j;
+                }
+				new_image[x][y][k] = image[i][j][k] ;
+			}
+        }
+    }
+}
+
+
+// -------------------------------------------------------------------
