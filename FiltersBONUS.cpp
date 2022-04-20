@@ -28,6 +28,7 @@ void enlarge_image4();
 void enlarge_image();
 void shuffle_image();
 void rotate_image();
+void invert_image();
 
 
 
@@ -54,6 +55,14 @@ int main()
         saveImage(new_image);
         return 0;
 	}
+	else if (filter == "2")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        invert_image();
+        saveImage(new_image);
+        return 0;
+    }
 	else if (filter == "3")
     {
         cout << "Enter the source image file name: ";
@@ -539,9 +548,9 @@ void  enlarge_image4() {
         for (int j = 128; j <= 255; ++j) {
 			for (int k=0 ; k < RGB;++k){
 				new_image[((i - 128) * 2)][((j - 128) * 2)][k] = image[i][j][k];
+				new_image[((i - 128) * 2)][((j - 128) * 2) + 1][k] = image[i][j][k];
+				new_image[((i - 128) * 2) + 1][((j - 128) * 2)][k] = image[i][j][k];
 				new_image[((i - 128) * 2) + 1][((j - 128) * 2) + 1][k] = image[i][j][k];
-				new_image[((i - 128) * 2)][((j - 128) * 2)][k] = image[i][j][k];
-				new_image[(((i - 128) * 2)) + 1][(((j - 128) * 2)) + 1][k] = image[i][j][k];
 			}
         }
     }
@@ -728,3 +737,23 @@ void rotate_image()
         }
     }
 }
+
+// -----------------------------------------------------
+
+
+void invert_image()
+{
+    for (int i = 0; i < SIZE; ++i)
+    {
+        for (int j = 0; j < SIZE; ++j)
+        {
+			for (int k=0 ; k < RGB;++k){
+          		new_image[i][j][k] = 255 - image[i][j][k];
+			}
+        }
+    }
+}
+
+
+
+// -----------------------------------------------------

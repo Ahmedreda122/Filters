@@ -529,8 +529,8 @@ void  enlarge_image4() {
         for (int j = 129; j <= 256; ++j) {
 
             new_image[((i - 129) * 2)][((j - 129) * 2)] = image[i][j];
-            new_image[((i - 129) * 2) + 1][((j - 129) * 2) + 1] = image[i][j];
-            new_image[((i - 129) * 2)][((j - 129) * 2)] = image[i][j];
+            new_image[((i - 129) * 2)][(((j - 129) * 2)) + 1] = image[i][j];
+            new_image[(((i - 129) * 2)) + 1][((j - 129) * 2)] = image[i][j];
             new_image[(((i - 129) * 2)) + 1][(((j - 129) * 2)) + 1] = image[i][j];
 
         }
@@ -716,7 +716,7 @@ void invert_image()
     {
         for (int j = 0; j < SIZE; ++j)
         {
-            image[i][j] = 255 - image[i][j];
+            new_image[i][j] = 255 - image[i][j];
         }
     }
 }
