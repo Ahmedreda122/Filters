@@ -670,45 +670,59 @@ void shuffle_image() {
 // to rotate image (90 / 180 / 270) deg
 void rotate_image()
 {
-    int degree;
-    cout << "Ahlan ya Am El-User...\n";
-    cout << "Rotate image:(1 | 2 | 3) \n";
-    cout << " 1- 90 deg Right \n 2- 90 deg Left \n 3- 180 deg \n>>> ";
-    cin >> degree;
+    while (true)
+	{
+		string degree;
+		cout << "Ahlan ya Am El-User...\n";
+		cout << "Rotate image:(1 | 2 | 3) \n";
+		cout << " 1- 90 deg Right \n 2- 90 deg Left \n 3- 180 deg \n>>> ";
 
-	// rotate image 90 deg Right
-    if (degree == 1)
-    {
-        for (int i = 0; i < SIZE; ++i)
-        {
-            for (int j = 0; j < SIZE; ++j)
-            {
-                new_image[i][j] = image[255 - j][i];
-            }
-        }
-    }
-	// rotate image 90 deg Left
-    else if (degree == 2)
-    {
-        for (int i = 0; i < SIZE; ++i)
-        {
-            for (int j = 0; j < SIZE; ++j)
-            {
-                new_image[i][j] = image[j][255 - i];
-            }
-        }
-    }
-	// rotate image 180 deg
-    else if (degree == 3)
-    {
-        for (int i = 0; i < SIZE; ++i)
-        {
-            for (int j = 0; j < SIZE; ++j)
-            {
-                new_image[i][j] = image[255 - i][255 - j];
-            }
-        }
-    }
+		getline(cin, degree);
+		degree.erase(remove_if(degree.begin(), degree.end(), ::isspace), degree.end());
+		cin.ignore(0);
+
+		// rotate image 90 deg Right
+		if (degree == "1")
+		{
+			for (int i = 0; i < SIZE; ++i)
+			{
+				for (int j = 0; j < SIZE; ++j)
+				{
+					for (int k=0 ; k < RGB;++k){
+						new_image[i][j][k] = image[255 - j][i][k];
+					}
+				}
+			}
+			break;
+		}
+		// rotate image 90 deg Left
+		else if (degree == "2")
+		{
+			for (int i = 0; i < SIZE; ++i)
+			{
+				for (int j = 0; j < SIZE; ++j)
+				{
+					for (int k=0 ; k < RGB;++k){
+						new_image[i][j][k] = image[j][255 - i][k];
+					}
+				}
+			}
+			break;
+		}
+		// rotate image 180 deg
+		else if (degree == "3")
+		{
+			for (int i = 0; i < SIZE; ++i)
+			{
+				for (int j = 0; j < SIZE; ++j)
+				{
+					for (int k=0 ; k < RGB;++k){
+						new_image[i][j][k] = image[255 - i][255 - j][k];
+					}
+				}
+			}
+			break;
+		}
 }
 // ----------------------------------------
 // invert color
