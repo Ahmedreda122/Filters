@@ -691,6 +691,7 @@ void rotate_image()
                     new_image[i][j] = image[255 - j][i];
                 }
             }
+            break;
         }
         // rotate image 90 deg Left
         else if (degree == "2")
@@ -702,6 +703,7 @@ void rotate_image()
                     new_image[i][j] = image[j][255 - i];
                 }
             }
+            break;
         }
         // rotate image 180 deg
         else if (degree == "3")
@@ -713,6 +715,7 @@ void rotate_image()
                     new_image[i][j] = image[255 - i][255 - j];
                 }
             }
+            break;
         }
     }
 }
