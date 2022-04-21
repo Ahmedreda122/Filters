@@ -681,48 +681,40 @@ void rotate_image()
 		degree.erase(remove_if(degree.begin(), degree.end(), ::isspace), degree.end());
 		cin.ignore(0);
 
-		// rotate image 90 deg Right
-		if (degree == "1")
-		{
-			for (int i = 0; i < SIZE; ++i)
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int k=0 ; k < RGB;++k){
-						new_image[i][j][k] = image[255 - j][i][k];
-					}
-				}
-			}
-			break;
-		}
-		// rotate image 90 deg Left
-		else if (degree == "2")
-		{
-			for (int i = 0; i < SIZE; ++i)
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int k=0 ; k < RGB;++k){
-						new_image[i][j][k] = image[j][255 - i][k];
-					}
-				}
-			}
-			break;
-		}
-		// rotate image 180 deg
-		else if (degree == "3")
-		{
-			for (int i = 0; i < SIZE; ++i)
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int k=0 ; k < RGB;++k){
-						new_image[i][j][k] = image[255 - i][255 - j][k];
-					}
-				}
-			}
-			break;
-		}
+        // rotate image 90 deg Right
+        if (degree == "1")
+        {
+            for (int i = 0; i < SIZE; ++i)
+            {
+                for (int j = 0; j < SIZE; ++j)
+                {
+                    new_image[i][j] = image[255 - j][i];
+                }
+            }
+        }
+        // rotate image 90 deg Left
+        else if (degree == "2")
+        {
+            for (int i = 0; i < SIZE; ++i)
+            {
+                for (int j = 0; j < SIZE; ++j)
+                {
+                    new_image[i][j] = image[j][255 - i];
+                }
+            }
+        }
+        // rotate image 180 deg
+        else if (degree == "3")
+        {
+            for (int i = 0; i < SIZE; ++i)
+            {
+                for (int j = 0; j < SIZE; ++j)
+                {
+                    new_image[i][j] = image[255 - i][255 - j];
+                }
+            }
+        }
+    }
 }
 // ----------------------------------------
 // invert color

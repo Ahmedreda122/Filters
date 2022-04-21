@@ -749,6 +749,7 @@ void rotate_image()
 			}
 			break;
 		}
+	}
 }
 // ----------------------------------------
 // invert color
