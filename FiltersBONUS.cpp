@@ -31,6 +31,8 @@ void rotate_image();
 void invert_image();
 
 
+
+
 int main()
 {
   	string filter;
@@ -38,7 +40,7 @@ int main()
 	int dimension = 0;
     string dimensionStr;
 
-	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
+	cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and black_levelen\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
 	// Getting the input from the user
 	getline(cin, filter);
 	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
@@ -153,13 +155,7 @@ void loadImage(unsigned char image[][SIZE][RGB])
 
 	// Add to it .bmp extension and load image
 	strcat(imageFileName, ".bmp");
-
-	// Check if the bitmap image exist or not, If not Ask for another image
-    if (readRGBBMP(imageFileName, image) == 1)
-    {
-        cout << "\nPlease, Try again: ";
-        loadImage(image);
-    }
+	readRGBBMP(imageFileName, image);
 }
 
 void saveImage(unsigned char saved_image[][SIZE][RGB])
@@ -174,7 +170,7 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
     strcat(imageFileName, ".bmp");
     writeRGBBMP(imageFileName, saved_image);
 }
-
+// ----------------------------------------
 void shrink(int dimension)
 {
 	// Creating an RGB image for to store horizontally shrinked original image version 
@@ -280,7 +276,7 @@ int& parse_valid_input(string str, int& dimension)
     }
 
 }
-
+// ----------------------------------------
 void darkenlighten(string choice)
 {
 	// If user choose to darken the image
@@ -321,7 +317,7 @@ void darkenlighten(string choice)
         }
     }
 }
-
+// ----------------------------------------
 void merge()
 {
 	// Looping after every pixel then update it with average of the corresponding pixels in the two images to merge them
@@ -336,7 +332,7 @@ void merge()
         }
     }
 }
-
+// ----------------------------------------
 // Blur image
 void blur()
 {
@@ -505,9 +501,8 @@ void blur()
 		}
 	}
 }
-
 // -------------------------------------------------------------------
-
+// Enlarge first Part
 void  enlarge_image1() {
     for (int i = 0; i <= 128; ++i) {
         for (int j = 0; j <= 128; ++j) {
@@ -521,6 +516,7 @@ void  enlarge_image1() {
     }
 }
 
+// Enlarge second Part
 void  enlarge_image2() {
     for (int i = 0; i <= 128; ++i) {
         for (int j = 128; j <= 255; ++j) {
@@ -534,6 +530,7 @@ void  enlarge_image2() {
     }
 }
 
+// Enlarge third Part
 void  enlarge_image3() {
     for (int i = 128; i <= 255; ++i) {
         for (int j = 0; j <= 128; ++j) {
@@ -547,6 +544,7 @@ void  enlarge_image3() {
     }
 }
 
+// Enlarge forth Part
 void  enlarge_image4() {
     for (int i = 128; i <= 255; ++i) {
         for (int j = 128; j <= 255; ++j) {
@@ -560,8 +558,7 @@ void  enlarge_image4() {
     }
 }
 
-
-
+// Choice any part user need Enlarge
 void enlarge_image() {
     int option = 0;
     cout << "Ahlan ya Am El-User...Which Part U Need zoom it?!...\n";
@@ -585,7 +582,7 @@ void enlarge_image() {
     }
 }
 // -------------------------------------------------------------------
-
+// sort the quarters in new file 
 void shuffle_image() {
 
     int a = 0, b = 0, c = 0, d = 0, x = 0, y = 0;
@@ -594,7 +591,7 @@ void shuffle_image() {
     cout << " 1 | 2 \n 3 | 4 \n";
     cin >> a >> b >> c >> d;
 
-    //first
+    //copy first quarter in new possition 
     for (int i = 0; i <= 128; ++i) {
         for (int j = 0; j <= 128; ++j) {
 			for (int k=0 ; k < RGB;++k){
@@ -618,9 +615,9 @@ void shuffle_image() {
 			}
         }
     }
-    //second
+    //copy secound quarter in new possition 
     for (int i = 0; i <= 128; ++i) {
-        for (int j = 129; j <= 256; ++j) {
+        for (int j = 128; j <= 255; ++j) {
 			for (int k=0 ; k < RGB;++k){
 				if (a == 2) {
 					x = i;
@@ -632,7 +629,7 @@ void shuffle_image() {
 				}
 				else if (c == 2) {
 					x = i + 128;
-					y = j - 129;
+					y = j - 128;
 				}
 				else if (d == 2) {
 					x = i + 128;
@@ -642,17 +639,17 @@ void shuffle_image() {
 			}
         }
     }
-    //third
+    //copy third quarter in new possition 
     for (int i = 128; i <= 255; ++i) {
         for (int j = 0; j <= 128; ++j) {
 			for (int k=0 ; k < RGB;++k){
 
 				if (a == 3) {
-					x = i - 129;
+					x = i - 128;
 					y = j;
 				}
 				else if (b == 3) {
-					x = i - 129;
+					x = i - 128;
 					y = j + 128;
 				}
 				else if (c == 3) {
@@ -667,21 +664,21 @@ void shuffle_image() {
 			}
         }
     }
-
-    for (int i = 129; i <= 256; ++i) {
-        for (int j = 129; j <= 256; ++j) {
+    //copy forth quarter in new possition 
+    for (int i = 128; i <= 255; ++i) {
+        for (int j = 128; j <= 255; ++j) {
 			for (int k=0 ; k < RGB;++k){
                 if (a == 4) {
-                    x = i - 129;
-                    y = j - 129;
+                    x = i - 128;
+                    y = j - 128;
                 }
                 else if (b == 4) {
-                    x = i - 129;
+                    x = i - 128;
                     y = j;
                 }
                 else if (c == 4) {
                     x = i;
-                    y = j - 129;
+                    y = j - 128;
                 }
                 else if (d == 4) {
                     x = i;
@@ -692,68 +689,58 @@ void shuffle_image() {
         }
     }
 }
-
-
 // -------------------------------------------------------------------
-
+// to rotate image (90 / 180 / 270) deg
 void rotate_image()
 {
-    while (true)
-	{
-		string degree;
-		cout << "Ahlan ya Am El-User...\n";
-		cout << "Rotate image:(1 | 2 | 3) \n";
-		cout << " 1- 90 deg Right \n 2- 90 deg Left \n 3- 180 deg \n>>> ";
+    int degree;
+    cout << "Ahlan ya Am El-User...\n";
+    cout << "Rotate image:(1 | 2 | 3) \n";
+    cout << " 1- 90 deg Right \n 2- 90 deg Left \n 3- 180 deg \n>>> ";
+    cin >> degree;
 
-		getline(cin, degree);
-		degree.erase(remove_if(degree.begin(), degree.end(), ::isspace), degree.end());
-		cin.ignore(0);
-
-		if (degree == "1")
-		{
-			for (int i = 0; i < SIZE; ++i)
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int k=0 ; k < RGB;++k){
-						new_image[i][j][k] = image[255 - j][i][k];
-					}
+	// rotate image 90 deg Right
+    if (degree == 1)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int k=0 ; k < RGB;++k){
+                	new_image[i][j][k] = image[255 - j][i][k];
 				}
-			}
-			break;
-		}
-		else if (degree == "2")
-		{
-			for (int i = 0; i < SIZE; ++i)
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int k=0 ; k < RGB;++k){
-						new_image[i][j][k] = image[j][255 - i][k];
-					}
+            }
+        }
+    }
+	// rotate image 90 deg Left
+    else if (degree == 2)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int k=0 ; k < RGB;++k){
+                	new_image[i][j][k] = image[j][255 - i][k];
 				}
-			}
-			break;
-		}
-		else if (degree == "3")
-		{
-			for (int i = 0; i < SIZE; ++i)
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int k=0 ; k < RGB;++k){
-						new_image[i][j][k] = image[255 - i][255 - j][k];
-					}
+            }
+        }
+    }
+	// rotate image 180 deg
+    else if (degree == 3)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+				for (int k=0 ; k < RGB;++k){
+                	new_image[i][j][k] = image[255 - i][255 - j][k];
 				}
-			}
-			break;
-		}
-	}
+            }
+        }
+    }
 }
-
-
-// -----------------------------------------------------
-
+// ----------------------------------------
+// invert color
 void invert_image()
 {
     for (int i = 0; i < SIZE; ++i)
@@ -766,6 +753,4 @@ void invert_image()
         }
     }
 }
-
-
 // -----------------------------------------------------
