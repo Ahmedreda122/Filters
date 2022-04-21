@@ -484,7 +484,8 @@ int& parseValidInput(string str, int& dimension)
 
 }
 
-
+// -------------------------------------------------------------------
+// Enlarge first Part
 void  enlarge_image1() {
     for (int i = 0; i <= 128; ++i) {
         for (int j = 0; j <= 128; ++j) {
@@ -496,45 +497,47 @@ void  enlarge_image1() {
         }
     }
 }
-
+// Enlarge second Part
 void  enlarge_image2() {
     for (int i = 0; i <= 128; ++i) {
-        for (int j = 129; j <= 256; ++j) {
+        for (int j = 128; j <= 255; ++j) {
 
-            new_image[i * 2][((j - 129) * 2)] = image[i][j];
-            new_image[i * 2][((j - 129) * 2) + 1] = image[i][j];
-            new_image[(i * 2) + 1][((j - 129) * 2)] = image[i][j];
-            new_image[(i * 2) + 1][(((j - 129) * 2)) + 1] = image[i][j];
+            new_image[i * 2][((j - 128) * 2)] = image[i][j];
+            new_image[i * 2][((j - 128) * 2) + 1] = image[i][j];
+            new_image[(i * 2) + 1][((j - 128) * 2)] = image[i][j];
+            new_image[(i * 2) + 1][(((j - 128) * 2)) + 1] = image[i][j];
         }
     }
 }
 
+// Enlarge third Part
 void  enlarge_image3() {
-    for (int i = 129; i <= 256; ++i) {
+    for (int i = 128; i <= 255; ++i) {
         for (int j = 0; j <= 128; ++j) {
 
-            new_image[((i - 129) * 2)][j * 2] = image[i][j];
-            new_image[((i - 129) * 2) + 1][j * 2] = image[i][j];
-            new_image[((i - 129) * 2)][(j * 2) + 1] = image[i][j];
-            new_image[(((i - 129) * 2)) + 1][(j * 2) + 1] = image[i][j];
+            new_image[((i - 128) * 2)][j * 2] = image[i][j];
+            new_image[((i - 128) * 2) + 1][j * 2] = image[i][j];
+            new_image[((i - 128) * 2)][(j * 2) + 1] = image[i][j];
+            new_image[(((i - 128) * 2)) + 1][(j * 2) + 1] = image[i][j];
 
         }
     }
 }
-
+// Enlarge forth Part
 void  enlarge_image4() {
-    for (int i = 129; i <= 256; ++i) {
-        for (int j = 129; j <= 256; ++j) {
+    for (int i = 128; i <= 255; ++i) {
+        for (int j = 128; j <= 255; ++j) {
 
-            new_image[((i - 129) * 2)][((j - 129) * 2)] = image[i][j];
-            new_image[((i - 129) * 2)][(((j - 129) * 2)) + 1] = image[i][j];
-            new_image[(((i - 129) * 2)) + 1][((j - 129) * 2)] = image[i][j];
-            new_image[(((i - 129) * 2)) + 1][(((j - 129) * 2)) + 1] = image[i][j];
+            new_image[((i - 128) * 2)][((j - 128) * 2)] = image[i][j];
+            new_image[((i - 128) * 2)][(((j - 128) * 2)) + 1] = image[i][j];
+            new_image[(((i - 128) * 2)) + 1][((j - 128) * 2)] = image[i][j];
+            new_image[(((i - 128) * 2)) + 1][(((j - 128) * 2)) + 1] = image[i][j];
 
         }
     }
 }
 
+// Choice any part user need Enlarge
 void enlarge_image() {
     int option = 0;
     cout << "Ahlan ya Am El-User...Which Part U Need zoom it?!...\n";
@@ -557,10 +560,8 @@ void enlarge_image() {
         cout << "Wrong choice!.." << " Try Again.." << endl;
     }
 }
-
-
-//_________________________________________
-
+// -------------------------------------------------------------------
+// sort the quarters in new file 
 void shuffle_image() {
 
     int a = 0, b = 0, c = 0, d = 0, x = 0, y = 0;
@@ -569,7 +570,7 @@ void shuffle_image() {
     cout << " 1 | 2 \n 3 | 4 \n";
     cin >> a >> b >> c >> d;
 
-    //first
+    //copy first quarter in new possition 
     for (int i = 0; i <= 128; ++i) {
         for (int j = 0; j <= 128; ++j) {
 
@@ -593,9 +594,9 @@ void shuffle_image() {
             new_image[x][y] = image[i][j];
         }
     }
-    //second
+    //copy secound quarter in new possition 
     for (int i = 0; i <= 128; ++i) {
-        for (int j = 129; j <= 256; ++j) {
+        for (int j = 128; j <= 255; ++j) {
 
 			if (a == 2) {
 				x = i;
@@ -607,7 +608,7 @@ void shuffle_image() {
 			}
 			else if (c == 2) {
 				x = i + 128;
-				y = j - 129;
+				y = j - 128;
 			}
 			else if (d == 2) {
 				x = i + 128;
@@ -617,16 +618,16 @@ void shuffle_image() {
             new_image[x][y] = image[i][j];
         }
     }
-    //third
-    for (int i = 129; i <= 256; ++i) {
+    //copy third quarter in new possition 
+    for (int i = 128; i <= 255; ++i) {
         for (int j = 0; j <= 128; ++j) {
 
 			if (a == 3) {
-				x = i - 129;
+				x = i - 128;
 				y = j;
 			}
 			else if (b == 3) {
-				x = i - 129;
+				x = i - 128;
 				y = j + 128;
 			}
 			else if (c == 3) {
@@ -640,20 +641,20 @@ void shuffle_image() {
             new_image[x][y] = image[i][j];
         }
     }
-    //forth
-    for (int i = 129; i <= 256; ++i) {
-        for (int j = 129; j <= 256; ++j) {
+    //copy forth quarter in new possition 
+    for (int i = 128; i <= 255; ++i) {
+        for (int j = 128; j <= 255; ++j) {
             if (a == 4) {
-                x = i - 129;
-                y = j - 129;
+                x = i - 128;
+                y = j - 128;
             }
             else if (b == 4) {
-                x = i - 129;
+                x = i - 128;
                 y = j;
             }
             else if (c == 4) {
                 x = i;
-                y = j - 129;
+                y = j - 128;
             }
             else if (d == 4) {
                 x = i;
@@ -665,8 +666,8 @@ void shuffle_image() {
     }
 }
 
-//_________________________________________
-
+// -------------------------------------------------------------------
+// to rotate image (90 / 180 / 270) deg
 void rotate_image()
 {
     int degree;
@@ -675,6 +676,7 @@ void rotate_image()
     cout << " 1- 90 deg Right \n 2- 90 deg Left \n 3- 180 deg \n>>> ";
     cin >> degree;
 
+	// rotate image 90 deg Right
     if (degree == 1)
     {
         for (int i = 0; i < SIZE; ++i)
@@ -685,6 +687,7 @@ void rotate_image()
             }
         }
     }
+	// rotate image 90 deg Left
     else if (degree == 2)
     {
         for (int i = 0; i < SIZE; ++i)
@@ -695,6 +698,7 @@ void rotate_image()
             }
         }
     }
+	// rotate image 180 deg
     else if (degree == 3)
     {
         for (int i = 0; i < SIZE; ++i)
@@ -706,8 +710,8 @@ void rotate_image()
         }
     }
 }
-
-
+// ----------------------------------------
+// invert color
 void invert_image()
 {
     for (int i = 0; i < SIZE; ++i)
@@ -718,7 +722,7 @@ void invert_image()
         }
     }
 }
-
+// ------------------------------------------------------
 void black_white_filter()
 {
     for (int i = 0; i < SIZE; i++)
