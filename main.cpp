@@ -14,13 +14,13 @@ unsigned char secondImage[SIZE][SIZE];
 unsigned char new_image[SIZE][SIZE];
 
 // Defining the functions in the program so main function can recognize them.
-void loadImage(unsigned char image[][SIZE]);
-void saveImage(unsigned char saved_image[][SIZE]);
+void load_image(unsigned char image[][SIZE]);
+void save_image(unsigned char saved_image[][SIZE]);
 void blur();
 void darkenlighten(string choice);
 void merge();
 void shrink(int dimension);
-int& parseValidInput(string str, int& dimension);
+int& parse_valid_input(string str, int& dimension);
 void enlarge_image1();
 void enlarge_image2();
 void enlarge_image3();
@@ -55,42 +55,42 @@ int main()
     if (filter == "1")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         black_white_filter();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "2")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         invert_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
     else if (filter == "3")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         cout << "Enter the source second image file name: ";
-        loadImage(secondImage);
+        load_image(secondImage);
         merge();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "4")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         flip_image_filter();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "5")
     {
         string answer;
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         cout << "(D)arken or (L)ighten the image: ";
         getline(cin, answer);
 		cin.ignore(0);
@@ -99,7 +99,7 @@ int main()
         if (answer == "d" || answer == "l")
         {
             darkenlighten(answer);
-            saveImage(image);
+            save_image(image);
         }
         else
         {
@@ -111,64 +111,64 @@ int main()
     else if (filter == "6")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         rotate_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
     else if (filter == "7")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         edge_detection();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "8")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         enlarge_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
     else if (filter == "9")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         while (dimension == 0)
         {
             cout << "Shrink to (1/2), (1/3) or (1/4)?\nPlease, Enter the input on form a/b: ";
             getline(cin, dimensionStr);
-            parseValidInput(dimensionStr, dimension);
+            parse_valid_input(dimensionStr, dimension);
             cin.ignore(0);
         }
         shrink(dimension);
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "a" || filter == "A")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         mirror_image();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "b" || filter == "B")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         shuffle_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
     else if (filter == "c" || filter == "C")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         blur();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "0")
@@ -182,7 +182,7 @@ int main()
     }
 }
 //_________________________________________
-void loadImage(unsigned char image[][SIZE])
+void load_image(unsigned char image[][SIZE])
 {
     char imageFileName[100];
     // Get gray scale image file name
@@ -194,11 +194,11 @@ void loadImage(unsigned char image[][SIZE])
     if (readGSBMP(imageFileName, image) == 1)
     {
         cout << "\nPlease, Try again: ";
-        loadImage(image);
+        load_image(image);
     }
 }
 //_________________________________________
-void saveImage(unsigned char saved_image[][SIZE])
+void save_image(unsigned char saved_image[][SIZE])
 {
     char imageFileName[100];
     // Get gray scale image target file name
@@ -464,12 +464,12 @@ void shrink(int dimension)
     }
 }
 
-int& parseValidInput(string str, int& dimension)
+int& parse_valid_input(string str, int& dimension)
 {
     // Making a form for input rational number using regular expressions
-    regex isValidInput("(1/[2-4])");
+    regex is_valid_input("(1/[2-4])");
     //Returning True if the input string was like the form we just make, False otherwise
-    if (regex_match(str, isValidInput))
+    if (regex_match(str, is_valid_input))
     {
 		// Getting dimension denominator
         char d[1] = {str[2]};
