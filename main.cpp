@@ -2,17 +2,14 @@
 #include <fstream>
 #include <cstring>
 #include <math.h>
-#include <regex> 
+#include <regex>
 #include <algorithm>
 #include <string>
 #include "bmplib.cpp"
-
 using namespace std;
-
 unsigned char image[SIZE][SIZE];
 unsigned char secondImage[SIZE][SIZE];
 unsigned char new_image[SIZE][SIZE];
-
 // Defining the functions in the program so main function can recognize them.
 void loadImage(unsigned char image[][SIZE]);
 void saveImage(unsigned char saved_image[][SIZE]);
@@ -30,22 +27,26 @@ void shuffle_image();
 void rotate_image();
 void invert_image();
 void black_white_filter();
-
+void flip_vertically_filter();
+void flip_horizontally_filter();
+void flip_image_filter();
+void edge_detection();
+void mirror_left_half();
+void mirror_right_half();
+void mirror_upper_half();
+void mirror_down_half();
+void mirror_image();
 int main()
 {
     string filter;
-
     int dimension = 0;
     string dimensionStr;
-
     cout << "Please, Choose a filter to perform it:\n1- Black & White Filter\n2- Invert Filter\n3- Merge two photos.\n4- Flip Image\n5- Darken and lighten\n6- Rotate.\n7- Detect Image Edges\n8- Enlarge Image\n9- Shrink the image\na- Mirror 1/2 Image\nb- Shuffle Image\nc- Blur Image.\n0- Exit\n>>";
-
 	// Getting the input from the user
 	getline(cin, filter);
 	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
 	filter.erase(remove_if(filter.begin(), filter.end(), ::isspace), filter.end());
 	cin.ignore(0);
-
     if (filter == "1")
     {
         cout << "Enter the source image file name: ";
@@ -76,7 +77,7 @@ int main()
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
-        // flip();
+        flip_image_filter();
         saveImage(image);
         return 0;
     }
@@ -114,7 +115,7 @@ int main()
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
-        // edge();
+        edge_detection();
         saveImage(image);
         return 0;
     }
@@ -145,7 +146,7 @@ int main()
     {
         cout << "Enter the source image file name: ";
         loadImage(image);
-        // mirror ()
+        mirror_image();
         saveImage(image);
         return 0;
     }
@@ -175,19 +176,15 @@ int main()
         return 1;
     }
 }
-
 //_________________________________________
 void loadImage(unsigned char image[][SIZE])
 {
     char imageFileName[100];
-
     // Get gray scale image file name
     cin >> imageFileName;
 	cin.ignore();
-
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-
     // Check if the bitmap image exist or not, If not Ask for another image
     if (readGSBMP(imageFileName, image) == 1)
     {
@@ -195,28 +192,23 @@ void loadImage(unsigned char image[][SIZE])
         loadImage(image);
     }
 }
-
 //_________________________________________
 void saveImage(unsigned char saved_image[][SIZE])
 {
     char imageFileName[100];
-
     // Get gray scale image target file name
     cout << "Enter the target image file name: ";
     cin >> imageFileName;
-
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
     writeGSBMP(imageFileName, saved_image);
 }
-
 void blur()
 {
     // The divisor
     float div;
     // The Average of colour
     float AVG = 0;
-
     // Looping over the image pixels
     for (int x = 0; x < SIZE; x++)
     {
@@ -224,12 +216,11 @@ void blur()
         {
             // Resetting average of colour to its primary value
             AVG = 0;
-
             // Bluring the top left corner
             if ((x == 0) && (y == 0))
             {
                 div = 4.0;
-                // Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colour of them to store it in the blurred first pixel 
+                // Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colour of them to store it in the blurred first pixel
                 for (int n = x; n <= x + 1; n++)
                 {
                     for (int m = y; m <= y + 1; m++)
@@ -242,22 +233,20 @@ void blur()
             if ((x == 0) && (y > 0) && (y < (SIZE - 1)))
             {
                 div = 6.0;
-				// Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                 for (int n = x; n <= x + 1; n++)
                 {
                     for (int m = y - 1; m <= y + 1; m++)
                     {
                         AVG += image[n][m];
-
                     }
                 }
-
             }
             // Bluring the top right corner
             if ((x == 0) && (y == SIZE - 1))
             {
                 div = 4.0;
-				// Getting the 3 pixels that surround the top right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel 
+				// Getting the 3 pixels that surround the top right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
                 for (int n = x; n <= x + 1; n++)
                 {
                     for (int m = y - 1; m <= y; m++)
@@ -270,7 +259,7 @@ void blur()
             if ((x > 0) && (y == 0) && (x < SIZE - 1))
             {
                 div = 6.0;
-				// Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                 for (int n = x - 1; n <= x + 1; n++)
                 {
                     for (int m = y; m <= y + 1; m++)
@@ -283,7 +272,7 @@ void blur()
             if ((x > 0) && (y == SIZE - 1) && (x < SIZE - 1))
             {
                 div = 6.0;
-				// Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                 for (int n = x - 1; n <= x + 1; n++)
                 {
                     for (int m = y - 1; m <= y; m++)
@@ -296,7 +285,7 @@ void blur()
             if ((x == (SIZE - 1)) && (y == 0))
             {
                 div = 4.0;
-				// Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel 
+				// Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
                 for (int n = x - 1; n <= x; n++)
                 {
                     for (int m = y; m <= y + 1; m++)
@@ -309,7 +298,7 @@ void blur()
             if ((x == (SIZE - 1)) && (y == (SIZE - 1)))
             {
                 div = 4.0;
-				// Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel 
+				// Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
                 for (int n = x - 1; n <= x; n++)
                 {
                     for (int m = y - 1; m <= y; m++)
@@ -335,7 +324,7 @@ void blur()
             if (y > 0 && y < (SIZE - 1) && x == (SIZE - 1))
             {
                 div = 6.0;
-				// Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                 for (int n = x - 1; n <= x; n++)
                 {
                     for (int m = y - 1; m <= y + 1; m++)
@@ -351,7 +340,6 @@ void blur()
         }
     }
 }
-
 void merge()
 {
 	// Looping after every pixel then update it with average of the corresponding pixels in the two images to merge them
@@ -363,7 +351,6 @@ void merge()
         }
     }
 }
-
 void darkenlighten(string choice)
 {
 	// If user choose to darken the image
@@ -389,25 +376,22 @@ void darkenlighten(string choice)
             for (int j = 0; j < SIZE; ++j)
             {
                 /* Getting black level of colour by applying the formula "255 - light_level of pixel (pixel value) = black_level"
-                'Cause if white pixel value = 255 so if we minus 255 by white pixel value(which is 255) it gives zero and this is what we want */                
+                'Cause if white pixel value = 255 so if we minus 255 by white pixel value(which is 255) it gives zero and this is what we want */
                 black_level = 255 - image[i][j];
 				// Dereasing black_level of gray colour by 50% by increasing light_level(pixel_value) by 50% of black_level
                 image[i][j] += black_level / 2.0;
             }
         }
     }
-
 }
-
 void shrink(int dimension)
 {
-	// Creating an grayscale image for to store horizontally shrinked original image version 
+	// Creating an grayscale image for to store horizontally shrinked original image version
     unsigned char neww_image[SIZE][SIZE];
-    // Counter for looping after every (dimension value) pixels each time 
+    // Counter for looping after every (dimension value) pixels each time
     int counter = 0;
     // Variable for storing average of colour
     double AVG = 0;
-
     for (int i = 0; i < SIZE; ++i)
     {
         for (int j = 0; j < (SIZE / dimension); ++j)
@@ -427,7 +411,6 @@ void shrink(int dimension)
         // Resetting counter to shrink next row
         counter = 0;
     }
-
     for (int i = 0; i < SIZE / dimension; ++i)
     {
         for (int j = 0; j < SIZE / dimension; ++j)
@@ -443,7 +426,6 @@ void shrink(int dimension)
 		// Updating counter to move to next 2 (for example) pixels in the columns
         counter += dimension;
     }
-
 	// Updating the original image to the shrinked one (new_image) and every pixel not in shrinked photo will be white pixel
     for (int x = 0; x < SIZE; x++)
     {
@@ -457,15 +439,12 @@ void shrink(int dimension)
             {
                 image[x][y] = 255;
             }
-
         }
     }
-
 }
-
 int& parseValidInput(string str, int& dimension)
 {
-    // Making a form for input rational number using regular expressions 
+    // Making a form for input rational number using regular expressions
     regex isValidInput("(1/[2-4])");
     //Returning True if the input string was like the form we just make, False otherwise
     if (regex_match(str, isValidInput))
@@ -481,15 +460,12 @@ int& parseValidInput(string str, int& dimension)
 		// Return primary value of dimension which is ZERO
         return dimension;
     }
-
 }
-
 // -------------------------------------------------------------------
 // Enlarge first Part
 void  enlarge_image1() {
     for (int i = 0; i <= 128; ++i) {
         for (int j = 0; j <= 128; ++j) {
-
             new_image[i * 2][j * 2] = image[i][j];
             new_image[(i * 2) + 1][j * 2] = image[i][j];
             new_image[i * 2][(j * 2) + 1] = image[i][j];
@@ -501,7 +477,6 @@ void  enlarge_image1() {
 void  enlarge_image2() {
     for (int i = 0; i <= 128; ++i) {
         for (int j = 128; j <= 255; ++j) {
-
             new_image[i * 2][((j - 128) * 2)] = image[i][j];
             new_image[i * 2][((j - 128) * 2) + 1] = image[i][j];
             new_image[(i * 2) + 1][((j - 128) * 2)] = image[i][j];
@@ -509,17 +484,14 @@ void  enlarge_image2() {
         }
     }
 }
-
 // Enlarge third Part
 void  enlarge_image3() {
     for (int i = 128; i <= 255; ++i) {
         for (int j = 0; j <= 128; ++j) {
-
             new_image[((i - 128) * 2)][j * 2] = image[i][j];
             new_image[((i - 128) * 2) + 1][j * 2] = image[i][j];
             new_image[((i - 128) * 2)][(j * 2) + 1] = image[i][j];
             new_image[(((i - 128) * 2)) + 1][(j * 2) + 1] = image[i][j];
-
         }
     }
 }
@@ -527,23 +499,19 @@ void  enlarge_image3() {
 void  enlarge_image4() {
     for (int i = 128; i <= 255; ++i) {
         for (int j = 128; j <= 255; ++j) {
-
             new_image[((i - 128) * 2)][((j - 128) * 2)] = image[i][j];
             new_image[((i - 128) * 2)][(((j - 128) * 2)) + 1] = image[i][j];
             new_image[(((i - 128) * 2)) + 1][((j - 128) * 2)] = image[i][j];
             new_image[(((i - 128) * 2)) + 1][(((j - 128) * 2)) + 1] = image[i][j];
-
         }
     }
 }
-
 // Choice any part user need Enlarge
 void enlarge_image() {
     int option = 0;
     cout << "Ahlan ya Am El-User...Which Part U Need zoom it?!...\n";
     cout << " 1 | 2 \n 3 | 4 \n";
     cin >> option;
-
     if (option == 1) {
         enlarge_image1();
     }
@@ -561,19 +529,16 @@ void enlarge_image() {
     }
 }
 // -------------------------------------------------------------------
-// sort the quarters in new file 
+// sort the quarters in new file
 void shuffle_image() {
-
     int a = 0, b = 0, c = 0, d = 0, x = 0, y = 0;
     cout << "Ahlan ya Am El-User...\n";
     cout << "How u sort the quarters?...\n";
     cout << " 1 | 2 \n 3 | 4 \n";
     cin >> a >> b >> c >> d;
-
-    //copy first quarter in new possition 
+    //copy first quarter in new possition
     for (int i = 0; i <= 128; ++i) {
         for (int j = 0; j <= 128; ++j) {
-
             if (a == 1) {
                 x = i;
                 y = j;
@@ -590,14 +555,12 @@ void shuffle_image() {
                 x = i + 128;
                 y = j + 128;
             }
-
             new_image[x][y] = image[i][j];
         }
     }
-    //copy secound quarter in new possition 
+    //copy secound quarter in new possition
     for (int i = 0; i <= 128; ++i) {
         for (int j = 128; j <= 255; ++j) {
-
 			if (a == 2) {
 				x = i;
 				y = j - 128;
@@ -614,14 +577,12 @@ void shuffle_image() {
 				x = i + 128;
 				y = j;
 			}
-
             new_image[x][y] = image[i][j];
         }
     }
-    //copy third quarter in new possition 
+    //copy third quarter in new possition
     for (int i = 128; i <= 255; ++i) {
         for (int j = 0; j <= 128; ++j) {
-
 			if (a == 3) {
 				x = i - 128;
 				y = j;
@@ -641,7 +602,7 @@ void shuffle_image() {
             new_image[x][y] = image[i][j];
         }
     }
-    //copy forth quarter in new possition 
+    //copy forth quarter in new possition
     for (int i = 128; i <= 255; ++i) {
         for (int j = 128; j <= 255; ++j) {
             if (a == 4) {
@@ -660,12 +621,10 @@ void shuffle_image() {
                 x = i;
                 y = j;
             }
-
             new_image[x][y] = image[i][j];
         }
     }
 }
-
 // -------------------------------------------------------------------
 // to rotate image (90 / 180 / 270) deg
 void rotate_image()
@@ -676,11 +635,9 @@ void rotate_image()
 		cout << "Ahlan ya Am El-User...\n";
 		cout << "Rotate image:(1 | 2 | 3) \n";
 		cout << " 1- 90 deg Right \n 2- 90 deg Left \n 3- 180 deg \n>>> ";
-
 		getline(cin, degree);
 		degree.erase(remove_if(degree.begin(), degree.end(), ::isspace), degree.end());
 		cin.ignore(0);
-
         // rotate image 90 deg Right
         if (degree == "1")
         {
@@ -747,5 +704,127 @@ void black_white_filter()
                 image[i][j] = 0;
             }
         }
+    }
+}
+// ------------------------------------------------------
+void flip_vertically_filter(){
+    int image_copy[SIZE][SIZE] = {0};
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image_copy[i][j] = image[SIZE - i - 1][j];
+        }
+    }
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j] = image_copy[i][j];
+        }
+    }
+}
+//_________________________________________
+void flip_horizontally_filter(){
+    int image_copy[SIZE][SIZE] = {0};
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image_copy[i][j] = image[i][SIZE - j - 1];
+        }
+    }
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j] = image_copy[i][j];
+        }
+    }
+}
+//_________________________________________
+// make the user any direction to flip
+void flip_image_filter(){
+    string v_or_h;
+    cout << "\nDo you want to flip vertically or horizontally?\n";
+    cin >> v_or_h;
+    if(v_or_h == "vertically" || v_or_h == "v" || v_or_h == "V") {
+        flip_vertically_filter();
+    }
+    else if(v_or_h == "horizontally" || v_or_h == "h" || v_or_h == "H") {
+        flip_horizontally_filter();
+    }
+}
+//_________________________________________
+void edge_detection(){
+    // convert picture into black and white to ease detection
+    black_white_filter();
+    int x, y;
+    int image_copy[SIZE][SIZE] = {0};
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            if(i - 1 > 0 && i + 1  < 256 && j - 1 > 0 && j + 1 < 256 ){
+                // calculate change in x axis
+                x = image[i - 1][j] + image[i + 1][j] - 2*image[i][j];
+                // calculate change in y axis
+                y = image[i][j - 1] + image[i][j + 1] - 2*image[i][j];
+                // collect change in both axises
+                // subtract from 255 to convert edges from white to black
+                image_copy[i][j] = 255 - (x + y);
+            }
+            // make the remaining pixels from black to white
+            else {
+                image_copy[i][j] = 255;
+            }
+
+        }
+    }
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j] = image_copy[i][j];
+        }
+    }
+}
+//_________________________________________
+void mirror_down_half(){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j] = image[SIZE - i][j];
+        }
+    }
+}
+//_________________________________________
+void mirror_right_half(){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j] = image[i][SIZE - j];
+        }
+    }
+}
+//_________________________________________
+void mirror_upper_half(){
+    for(int i = SIZE; i >= 0; i--){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j] = image[SIZE - i][j];
+        }
+    }
+}
+//_________________________________________
+void mirror_left_half(){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = SIZE; j >= 0; j--){
+            image[i][j] = image[i][SIZE - j];
+        }
+    }
+}
+//_________________________________________
+// make the user choose any half he wants
+void mirror_image(){
+    string wanted_half;
+    cout << "\nmirror (l)eft, (r)ight, (u)pper, (d)own ?\n ";
+    cin >> wanted_half;
+    if(wanted_half == "left" || wanted_half == "l" || wanted_half == "L"){
+        mirror_left_half();
+    }
+    else if(wanted_half == "right" || wanted_half == "r" || wanted_half == "R"){
+        mirror_right_half();
+    }
+    else if(wanted_half == "upper" || wanted_half == "u" || wanted_half == "U"){
+        mirror_upper_half();
+    }
+    else if(wanted_half == "down" || wanted_half == "d" || wanted_half == "D"){
+        mirror_down_half();
     }
 }
