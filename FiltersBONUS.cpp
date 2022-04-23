@@ -29,7 +29,16 @@ void enlarge_image();
 void shuffle_image();
 void rotate_image();
 void invert_image();
-
+void black_white_image();
+void flip_vertically();
+void flip_horizontally();
+void flip_image_filter();
+void edge_detection();
+void mirror_upper_half();
+void mirror_down_half();
+void mirror_left_half();
+void mirror_right_half();
+void mirror_image();
 
 int main()
 {
@@ -53,6 +62,14 @@ int main()
         saveImage(new_image);
         return 0;
 	}
+	else if (filter == "1")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        black_white_image();
+        saveImage(image);
+        return 0;
+    }
 	else if (filter == "2")
     {
         cout << "Enter the source image file name: ";
@@ -69,7 +86,15 @@ int main()
         loadImage(secondImage);
         merge();
         saveImage(image);
-	}    
+	}
+	else if (filter == "4")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        flip_image_filter();
+        saveImage(image);
+        return 0;
+    }
 	else if (filter == "5")
     {
         string answer;
@@ -100,6 +125,14 @@ int main()
         saveImage(new_image);
         return 0;
     }
+    else if (filter == "7")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        edge_detection();
+        saveImage(image);
+        return 0;
+    }
 	else if (filter == "8")
     {
         cout << "Enter the source image file name: ";
@@ -120,6 +153,14 @@ int main()
             cin.ignore(0);
         }
         shrink(dimension);
+        saveImage(image);
+        return 0;
+    }
+    else if (filter == "a" || filter == "A")
+    {
+        cout << "Enter the source image file name: ";
+        loadImage(image);
+        mirror_image();
         saveImage(image);
         return 0;
     }
@@ -176,16 +217,16 @@ void saveImage(unsigned char saved_image[][SIZE][RGB])
 // ----------------------------------------
 void shrink(int dimension)
 {
-	// Creating an RGB image for to store horizontally shrinked original image version 
+	// Creating an RGB image for to store horizontally shrinked original image version
     unsigned char neww_image[SIZE][SIZE][RGB];
-	// Counter for looping after every (dimension value) pixels each time 
+	// Counter for looping after every (dimension value) pixels each time
     int counter = 0;
 
 	// Variables for storing averages of colours
 	double AVG_red = 0;
 	double AVG_green = 0;
 	double AVG_blue = 0;
-	
+
     for (int i = 0; i < SIZE; ++i)
     {
         for (int j = 0; j < (SIZE / dimension); ++j)
@@ -331,7 +372,7 @@ void merge()
 			for (int y = 0; y < 3; ++y)
 			{
 				image[i][j][y] = (image[i][j][y] + secondImage[i][j][y]) / 2.0;
-			}  
+			}
         }
     }
 }
@@ -359,7 +400,7 @@ void blur()
 			if ((x == 0) && (y == 0))
 			{
 				div = 4.0;
-				// Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colours of them to store it in the blurred first pixel 
+				// Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colours of them to store it in the blurred first pixel
 				for (int n = x; n <= x + 1; n++)
 				{
 					for (int m = y; m <= y + 1; m++)
@@ -374,7 +415,7 @@ void blur()
 			if ((x == 0) && (y > 0) && (y < (SIZE - 1)))
 			{
 				div = 6.0;
-				// Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
 				for (int n = x; n <= x + 1; n++)
 				{
 					for (int m = y - 1; m <= y + 1; m++)
@@ -390,7 +431,7 @@ void blur()
 			if ((x == 0) && (y == SIZE - 1))
 			{
 				div = 4.0;
-				// Getting the 3 pixels that surround the top right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel 
+				// Getting the 3 pixels that surround the top right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
 				for (int n = x; n <= x + 1; n++)
 				{
 					for (int m = y - 1; m <= y; m++)
@@ -405,7 +446,7 @@ void blur()
 			if ((x > 0) && (y == 0) && (x < SIZE - 1))
 			{
 				div = 6.0;
-				// Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
 				for (int n = x - 1; n <= x + 1; n++)
 				{
 					for (int m = y; m <= y + 1; m++)
@@ -420,7 +461,7 @@ void blur()
 			if ((x > 0) && (y == SIZE - 1) && (x < SIZE - 1))
 			{
 				div = 6.0;
-				// Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
 				for (int n = x - 1; n <= x + 1; n++)
 				{
 					for (int m = y - 1; m <= y ; m++)
@@ -435,7 +476,7 @@ void blur()
 			if ((x == (SIZE - 1)) && (y == 0))
 			{
 				div = 4.0;
-				// Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel 
+				// Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
 				for (int n = x - 1; n <= x; n++)
 				{
 					for (int m = y; m <= y + 1; m++)
@@ -450,7 +491,7 @@ void blur()
 			if ((x == (SIZE - 1)) && (y == (SIZE - 1)))
 			{
 				div = 4.0;
-				// Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel 
+				// Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
 				for (int n = x - 1; n <= x; n++)
 				{
 					for (int m = y - 1; m <= y; m++)
@@ -481,7 +522,7 @@ void blur()
 			if (y > 0 && y < (SIZE - 1) && x == (SIZE - 1))
 			{
 				div = 6.0;
-				// Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel) 
+				// Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
 				for (int n = x - 1; n <= x; n++)
 				{
 					for (int  m = y - 1; m <= y + 1; m++)
@@ -585,7 +626,7 @@ void enlarge_image() {
     }
 }
 // -------------------------------------------------------------------
-// sort the quarters in new file 
+// sort the quarters in new file
 void shuffle_image() {
 
     int a = 0, b = 0, c = 0, d = 0, x = 0, y = 0;
@@ -594,7 +635,7 @@ void shuffle_image() {
     cout << " 1 | 2 \n 3 | 4 \n";
     cin >> a >> b >> c >> d;
 
-    //copy first quarter in new possition 
+    //copy first quarter in new possition
     for (int i = 0; i <= 128; ++i) {
         for (int j = 0; j <= 128; ++j) {
 			for (int k=0 ; k < RGB;++k){
@@ -618,7 +659,7 @@ void shuffle_image() {
 			}
         }
     }
-    //copy secound quarter in new possition 
+    //copy secound quarter in new possition
     for (int i = 0; i <= 128; ++i) {
         for (int j = 128; j <= 255; ++j) {
 			for (int k=0 ; k < RGB;++k){
@@ -642,7 +683,7 @@ void shuffle_image() {
 			}
         }
     }
-    //copy third quarter in new possition 
+    //copy third quarter in new possition
     for (int i = 128; i <= 255; ++i) {
         for (int j = 0; j <= 128; ++j) {
 			for (int k=0 ; k < RGB;++k){
@@ -667,7 +708,7 @@ void shuffle_image() {
 			}
         }
     }
-    //copy forth quarter in new possition 
+    //copy forth quarter in new possition
     for (int i = 128; i <= 255; ++i) {
         for (int j = 128; j <= 255; ++j) {
 			for (int k=0 ; k < RGB;++k){
@@ -766,4 +807,195 @@ void invert_image()
     }
 }
 
-// -----------------------------------------------------
+//_________________________________________
+void black_white_image(){
+    //converting image into gray
+    int pixel_value = 0;
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                pixel_value += image[i][j][k];
+            }
+
+            for(int Z = 0; Z < RGB; Z++){
+                image[i][j][Z] = pixel_value / 3;
+            }
+            pixel_value = 0;
+
+        }
+    }
+    //converting gray image into black and white
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+            }if (image[i][j][0] > 127){
+                for(int z = 0; z < RGB; z++){
+                    image[i][j][z] = 255;
+                }
+
+
+                }else{
+                    for(int z = 0; z < RGB; z++){
+                        image[i][j][z] = 0;
+                    }
+
+                }
+        }
+    }
+}
+//_________________________________________
+void flip_vertically(){
+    int image_copy[SIZE][SIZE][RGB] = {0};
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image_copy[i][j][k] = image[SIZE - i - 1][j][k];
+            }
+        }
+    }
+
+for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image[i][j][k] = image_copy[i][j][k];
+            }
+        }
+    }
+
+}
+//_________________________________________
+void flip_horizontally(){
+    int image_copy[SIZE][SIZE][RGB] = {0};
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image_copy[i][j][k] = image[i][SIZE - j - 1][k];
+            }
+        }
+    }
+
+for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image[i][j][k] = image_copy[i][j][k];
+            }
+        }
+    }
+
+}
+//_________________________________________
+void flip_image_filter(){
+    string v_or_h;
+    cout << "\nDo you want to flip vertically or horizontally?\n";
+    cin >> v_or_h;
+    if(v_or_h == "vertically" || v_or_h == "v" || v_or_h == "V") {
+        flip_vertically();
+    }
+    else if(v_or_h == "horizontally" || v_or_h == "h" || v_or_h == "H") {
+        flip_horizontally();
+    }
+}
+//_________________________________________
+void edge_detection(){
+    // convert picture into black and white too ease detection
+    black_white_image();
+    int x, y;
+    int image_copy[SIZE][SIZE][RGB] = {0};
+    for(int i = 0; i < SIZE; i++){
+        for(int j= 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                if(i - 1 > 0 && i + 1  < 256 && j - 1 > 0 && j + 1 < 256 ){
+                // calculate changes in x axis
+                x = image[i - 1][j][k] + image[i + 1][j][k] - 2*image[i][j][k];
+                // calculate changes in y axis
+                y = image[i][j - 1][k] + image[i][j + 1][k] - 2*image[i][j][k];
+                // collect changes in both axises
+                // subtract from 255 to convert edges color from white to black
+                image_copy[i][j][k] = 255 - (x + y);
+            }
+            else {
+                // make the remaining pixels white
+                image_copy[i][j][k] = 255;
+            }
+
+
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image[i][j][k] = image_copy[i][j][k];
+            }
+        }
+    }
+
+}
+//_________________________________________
+// mirror down side 1/2
+void mirror_down_half(){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image[i][j][k] = image[SIZE - i][j][k];
+            }
+        }
+    }
+}
+//_________________________________________
+// mirror right 1/2
+void mirror_right_half(){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image[i][j][k] = image[i][SIZE - j][k];
+            }
+        }
+    }
+
+}
+//_________________________________________
+// mirror upper 1/2
+void mirror_upper_half(){
+    for(int i = SIZE; i >= 0; i--){
+        for(int j = 0; j < SIZE; j++){
+            for(int k = 0; k < RGB; k++){
+                image[i][j][k] = image[SIZE - i][j][k];
+            }
+        }
+    }
+
+}
+//_________________________________________
+// mirror left 1/2
+void mirror_left_half(){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = SIZE; j >= 0; j--){
+            for(int k = 0; k < RGB; k++){
+                image[i][j][k] = image[i][SIZE - j][k];
+            }
+        }
+    }
+}
+//_________________________________________
+// make the user choose any half he wants
+void mirror_image(){
+    string wanted_half;
+    cout << "\nmirror (l)eft, (r)ight, (u)pper, (d)own ?\n ";
+    cin >> wanted_half;
+    if(wanted_half == "left" || wanted_half == "l" || wanted_half == "L"){
+        mirror_left_half();
+    }
+    else if(wanted_half == "right" || wanted_half == "r" || wanted_half == "R"){
+        mirror_right_half();
+    }
+    else if(wanted_half == "upper" || wanted_half == "u" || wanted_half == "U"){
+        mirror_upper_half();
+    }
+    else if(wanted_half == "down" || wanted_half == "d" || wanted_half == "D"){
+        mirror_down_half();
+    }
+}
+
+
+
