@@ -36,6 +36,8 @@ void mirror_right_half();
 void mirror_upper_half();
 void mirror_down_half();
 void mirror_image();
+
+
 int main()
 {
     string filter;
