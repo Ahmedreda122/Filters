@@ -6,10 +6,13 @@
 #include <algorithm>
 #include <string>
 #include "bmplib.cpp"
+
 using namespace std;
+
 unsigned char image[SIZE][SIZE];
 unsigned char secondImage[SIZE][SIZE];
 unsigned char new_image[SIZE][SIZE];
+
 // Defining the functions in the program so main function can recognize them.
 void load_image(unsigned char image[][SIZE]);
 void save_image(unsigned char saved_image[][SIZE]);
@@ -17,7 +20,7 @@ void blur();
 void darkenlighten(string choice);
 void merge();
 void shrink(int dimension);
-int& parseValidInput(string str, int& dimension);
+int& parse_valid_input(string str, int& dimension);
 void enlarge_image1();
 void enlarge_image2();
 void enlarge_image3();
@@ -137,7 +140,7 @@ int main()
         {
             cout << "Shrink to (1/2), (1/3) or (1/4)?\nPlease, Enter the input on form a/b: ";
             getline(cin, dimensionStr);
-            parseValidInput(dimensionStr, dimension);
+            parse_valid_input(dimensionStr, dimension);
             cin.ignore(0);
         }
         shrink(dimension);
@@ -165,7 +168,7 @@ int main()
         cout << "Enter the source image file name: ";
         load_image(image);
         blur();
-        save_image(new_image);
+        save_image(image);
         return 0;
     }
     else if (filter == "0")
@@ -194,7 +197,7 @@ void load_image(unsigned char image[][SIZE])
         load_image(image);
     }
 }
-//_________________________________________
+//________________________________________________
 void save_image(unsigned char saved_image[][SIZE])
 {
     char imageFileName[100];
@@ -205,13 +208,14 @@ void save_image(unsigned char saved_image[][SIZE])
     strcat(imageFileName, ".bmp");
     writeGSBMP(imageFileName, saved_image);
 }
+
 void blur()
 {
     // The divisor
     float div;
     // The Average of colour
     float AVG = 0;
-    
+
     // Loop for enhance the blur
     for (int i = 0; i < 7; ++i)
     {
@@ -355,6 +359,7 @@ void blur()
         }
     }
 }
+
 void merge()
 {
 	// Looping after every pixel then update it with average of the corresponding pixels in the two images to merge them
@@ -366,6 +371,7 @@ void merge()
         }
     }
 }
+
 void darkenlighten(string choice)
 {
 	// If user choose to darken the image
@@ -399,6 +405,7 @@ void darkenlighten(string choice)
         }
     }
 }
+
 void shrink(int dimension)
 {
 	// Creating an grayscale image for to store horizontally shrinked original image version
@@ -457,12 +464,13 @@ void shrink(int dimension)
         }
     }
 }
-int& parseValidInput(string str, int& dimension)
+
+int& parse_valid_input(string str, int& dimension)
 {
     // Making a form for input rational number using regular expressions
-    regex isValidInput("(1/[2-4])");
+    regex is_valid_input("(1/[2-4])");
     //Returning True if the input string was like the form we just make, False otherwise
-    if (regex_match(str, isValidInput))
+    if (regex_match(str, is_valid_input))
     {
 		// Getting dimension denominator
         char d[1] = {str[2]};
@@ -476,7 +484,7 @@ int& parseValidInput(string str, int& dimension)
         return dimension;
     }
 }
-// -------------------------------------------------------------------
+//__________________________________________________________________
 // Enlarge first Part
 void  enlarge_image1() {
     for (int i = 0; i <= 128; ++i) {
@@ -543,7 +551,7 @@ void enlarge_image() {
         cout << "Wrong choice!.." << " Try Again.." << endl;
     }
 }
-// -------------------------------------------------------------------
+//____________________________________________________________________
 // sort the quarters in new file
 void shuffle_image() {
     int a = 0, b = 0, c = 0, d = 0, x = 0, y = 0;
@@ -640,7 +648,7 @@ void shuffle_image() {
         }
     }
 }
-// -------------------------------------------------------------------
+//___________________________________________________________________________________________
 // to rotate image (90 / 180 / 270) deg
 void rotate_image()
 {
@@ -691,7 +699,7 @@ void rotate_image()
         }
     }
 }
-// ----------------------------------------
+//________________________________________________________
 // invert color
 void invert_image()
 {
@@ -703,7 +711,8 @@ void invert_image()
         }
     }
 }
-// ------------------------------------------------------
+
+//________________________________________________________
 void black_white_filter()
 {
     for (int i = 0; i < SIZE; i++)
@@ -722,7 +731,7 @@ void black_white_filter()
         }
     }
 }
-// ------------------------------------------------------
+//________________________________________________________
 void flip_vertically_filter(){
     for(int i = 0; i < SIZE; i++){
         for(int j = 0; j < SIZE; j++){
@@ -730,7 +739,7 @@ void flip_vertically_filter(){
         }
     }
 }
-//_________________________________________
+//________________________________________________________
 void flip_horizontally_filter(){
     for(int i = 0; i < SIZE; i++){
         for(int j = 0; j < SIZE; j++){
@@ -738,7 +747,7 @@ void flip_horizontally_filter(){
         }
     }
 }
-//_________________________________________
+//_________________________________________________________
 // make the user any direction to flip
 void flip_image_filter(){
     string v_or_h;
@@ -751,7 +760,7 @@ void flip_image_filter(){
         flip_horizontally_filter();
     }
 }
-//_________________________________________
+//______________________________________________________________________
 void edge_detection(){
     // convert picture into black and white to ease detection
     black_white_filter();
@@ -809,7 +818,7 @@ void mirror_left_half(){
         }
     }
 }
-//_________________________________________
+//_______________________________________________________________________________
 // make the user choose any half he wants
 void mirror_image(){
     string wanted_half;
