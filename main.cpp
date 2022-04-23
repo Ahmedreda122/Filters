@@ -168,7 +168,7 @@ int main()
         cout << "Enter the source image file name: ";
         loadImage(image);
         blur();
-        saveImage(new_image);
+        saveImage(image);
         return 0;
     }
     else if (filter == "0")
