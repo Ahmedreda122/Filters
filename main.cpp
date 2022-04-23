@@ -209,134 +209,147 @@ void blur()
     float div;
     // The Average of colour
     float AVG = 0;
-    // Looping over the image pixels
-    for (int x = 0; x < SIZE; x++)
+    
+    // Loop for enhance the blur
+    for (int i = 0; i < 7; ++i)
     {
-        for (int y = 0; y < SIZE; y++)
+        // Looping over the image pixels
+        for (int x = 0; x < SIZE; x++)
         {
-            // Resetting average of colour to its primary value
-            AVG = 0;
-            // Bluring the top left corner
-            if ((x == 0) && (y == 0))
+            for (int y = 0; y < SIZE; y++)
             {
-                div = 4.0;
-                // Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colour of them to store it in the blurred first pixel
-                for (int n = x; n <= x + 1; n++)
+                // Resetting average of colour to its primary value
+                AVG = 0;
+                // Bluring the top left corner
+                if ((x == 0) && (y == 0))
                 {
-                    for (int m = y; m <= y + 1; m++)
+                    div = 4.0;
+                    // Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colour of them to store it in the blurred first pixel
+                    for (int n = x; n <= x + 1; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y; m <= y + 1; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-            // Bluring top pixel's edge
-            if ((x == 0) && (y > 0) && (y < (SIZE - 1)))
-            {
-                div = 6.0;
-				// Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
-                for (int n = x; n <= x + 1; n++)
+                // Bluring top pixel's edge
+                if ((x == 0) && (y > 0) && (y < (SIZE - 1)))
                 {
-                    for (int m = y - 1; m <= y + 1; m++)
+                    div = 6.0;
+                    // Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    for (int n = x; n <= x + 1; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y - 1; m <= y + 1; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-            // Bluring the top right corner
-            if ((x == 0) && (y == SIZE - 1))
-            {
-                div = 4.0;
-				// Getting the 3 pixels that surround the top right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
-                for (int n = x; n <= x + 1; n++)
+                // Bluring the top right corner
+                if ((x == 0) && (y == SIZE - 1))
                 {
-                    for (int m = y - 1; m <= y; m++)
+                    div = 4.0;
+                    // Getting the 3 pixels that surround the top right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
+                    for (int n = x; n <= x + 1; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y - 1; m <= y; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-           // Bluring left edges
-            if ((x > 0) && (y == 0) && (x < SIZE - 1))
-            {
-                div = 6.0;
-				// Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
-                for (int n = x - 1; n <= x + 1; n++)
+                // Bluring left edges
+                if ((x > 0) && (y == 0) && (x < SIZE - 1))
                 {
-                    for (int m = y; m <= y + 1; m++)
+                    div = 6.0;
+                    // Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    for (int n = x - 1; n <= x + 1; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y; m <= y + 1; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-            // Bluring right edges
-            if ((x > 0) && (y == SIZE - 1) && (x < SIZE - 1))
-            {
-                div = 6.0;
-				// Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
-                for (int n = x - 1; n <= x + 1; n++)
+                // Bluring right edges
+                if ((x > 0) && (y == SIZE - 1) && (x < SIZE - 1))
                 {
-                    for (int m = y - 1; m <= y; m++)
+                    div = 6.0;
+                    // Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    for (int n = x - 1; n <= x + 1; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y - 1; m <= y; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-            // Bluring bottom left corner
-            if ((x == (SIZE - 1)) && (y == 0))
-            {
-                div = 4.0;
-				// Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
-                for (int n = x - 1; n <= x; n++)
+                // Bluring bottom left corner
+                if ((x == (SIZE - 1)) && (y == 0))
                 {
-                    for (int m = y; m <= y + 1; m++)
+                    div = 4.0;
+                    // Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
+                    for (int n = x - 1; n <= x; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y; m <= y + 1; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-            // Bluring bottom right corner
-            if ((x == (SIZE - 1)) && (y == (SIZE - 1)))
-            {
-                div = 4.0;
-				// Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
-                for (int n = x - 1; n <= x; n++)
+                // Bluring bottom right corner
+                if ((x == (SIZE - 1)) && (y == (SIZE - 1)))
                 {
-                    for (int m = y - 1; m <= y; m++)
+                    div = 4.0;
+                    // Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
+                    for (int n = x - 1; n <= x; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y - 1; m <= y; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-            // Bluring middle pixels
-            if (y > 0 && y < (SIZE - 1) && x > 0 && x < (SIZE - 1))
-            {
-                div = 9.0;
-				// Looping after the pixels that are in the middle or (NOT in edges or corners pixels) then getting each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
-                for (int n = x - 1; n <= x + 1; n++)
+                // Bluring middle pixels
+                if (y > 0 && y < (SIZE - 1) && x > 0 && x < (SIZE - 1))
                 {
-                    for (int m = y - 1; m <= y + 1; m++)
+                    div = 9.0;
+                    // Looping after the pixels that are in the middle or (NOT in edges or corners pixels) then getting each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    for (int n = x - 1; n <= x + 1; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y - 1; m <= y + 1; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
-            }
-           // Bluring bottom edges
-            if (y > 0 && y < (SIZE - 1) && x == (SIZE - 1))
-            {
-                div = 6.0;
-				// Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
-                for (int n = x - 1; n <= x; n++)
+                // Bluring bottom edges
+                if (y > 0 && y < (SIZE - 1) && x == (SIZE - 1))
                 {
-                    for (int m = y - 1; m <= y + 1; m++)
+                    div = 6.0;
+                    // Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    for (int n = x - 1; n <= x; n++)
                     {
-                        AVG += image[n][m];
+                        for (int m = y - 1; m <= y + 1; m++)
+                        {
+                            AVG += image[n][m];
+                        }
                     }
                 }
+                // Advantage colour
+                AVG = round(AVG / div);
+                // Storing the average value in new_image variable to blur the pixel.
+                new_image[x][y] = AVG;
             }
-            // Advantage colour
-            AVG = round(AVG / div);
-            // Storing the average value in new_image variable to blur the pixel.
-            new_image[x][y] = AVG;
+        }
+        //Converting the current pixels to blured ones
+        for (int x = 0; x < SIZE; ++x)
+        {
+            for (int y = 0; y < SIZE; ++y)
+            {
+                image[x][y] = new_image[x][y];
+            }
         }
     }
 }
