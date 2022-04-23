@@ -14,8 +14,8 @@ unsigned char new_image[SIZE][SIZE][RGB];
 unsigned char secondImage[SIZE][SIZE][RGB];
 
 // Defining the functions in the program so main function can recognize them.
-void loadImage(unsigned char image[][SIZE][RGB]);
-void saveImage(unsigned char saved_image[][SIZE][RGB]);
+void load_image(unsigned char image[][SIZE][RGB]);
+void save_image(unsigned char saved_image[][SIZE][RGB]);
 void blur();
 void darkenlighten(string choice);
 int& parse_valid_input(string str, int& dimension);
@@ -57,49 +57,49 @@ int main()
 	if (filter == "c" || filter == "C")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         blur();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
 	}
 	else if (filter == "1")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         black_white_image();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
 	else if (filter == "2")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         invert_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
 	else if (filter == "3")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         cout << "Enter the source second image file name: ";
-        loadImage(secondImage);
+        load_image(secondImage);
         merge();
-        saveImage(image);
+        save_image(image);
 	}
 	else if (filter == "4")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         flip_image_filter();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
 	else if (filter == "5")
     {
         string answer;
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         cout << "(D)arken or (L)ighten the image: ";
         getline(cin, answer);
 		cin.ignore(0);
@@ -108,7 +108,7 @@ int main()
         if (answer == "d" || answer == "l")
         {
             darkenlighten(answer);
-            saveImage(image);
+            save_image(image);
         }
         else
         {
@@ -120,31 +120,31 @@ int main()
 	else if (filter == "6")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         rotate_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
     else if (filter == "7")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         edge_detection();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
 	else if (filter == "8")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         enlarge_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
 	else if (filter == "9")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         while (dimension == 0)
         {
             cout << "Shrink to (1/2), (1/3) or (1/4)?\nPlease, Enter the input on form a/b: ";
@@ -153,23 +153,23 @@ int main()
             cin.ignore(0);
         }
         shrink(dimension);
-        saveImage(image);
+        save_image(image);
         return 0;
     }
     else if (filter == "a" || filter == "A")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         mirror_image();
-        saveImage(image);
+        save_image(image);
         return 0;
     }
 	else if (filter == "b" || filter == "B")
     {
         cout << "Enter the source image file name: ";
-        loadImage(image);
+        load_image(image);
         shuffle_image();
-        saveImage(new_image);
+        save_image(new_image);
         return 0;
     }
 	else if (filter == "0")
@@ -184,7 +184,7 @@ int main()
 
 }
 
-void loadImage(unsigned char image[][SIZE][RGB])
+void load_image(unsigned char image[][SIZE][RGB])
 {
 	char imageFileName[100];
 
@@ -198,11 +198,11 @@ void loadImage(unsigned char image[][SIZE][RGB])
     if (readRGBBMP(imageFileName, image) == 1)
     {
         cout << "\nPlease, Try again: ";
-        loadImage(image);
+        load_image(image);
     }
 }
 
-void saveImage(unsigned char saved_image[][SIZE][RGB])
+void save_image(unsigned char saved_image[][SIZE][RGB])
 {
     char imageFileName[100];
 
