@@ -17,7 +17,7 @@ unsigned char new_image[SIZE][SIZE];
 void load_image(unsigned char image[][SIZE]);
 void save_image(unsigned char saved_image[][SIZE]);
 void blur();
-void darkenlighten(string choice);
+void darken_lighten(string choice);
 void merge();
 void shrink(int dimension);
 int& parse_valid_input(string str, int& dimension);
@@ -98,7 +98,7 @@ int main()
         transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
         if (answer == "d" || answer == "l")
         {
-            darkenlighten(answer);
+            darken_lighten(answer);
             save_image(image);
         }
         else
@@ -230,7 +230,7 @@ void blur()
                 if ((x == 0) && (y == 0))
                 {
                     div = 4.0;
-                    // Getting the 3 pixels that surround the first pixel + the first pixel itself then caculating the average colour of them to store it in the blurred first pixel
+                    // Getting the 3 pixels that surround the first pixel + the first pixel itself then calculating the average colour of them to store it in the blurred first pixel
                     for (int n = x; n <= x + 1; n++)
                     {
                         for (int m = y; m <= y + 1; m++)
@@ -243,7 +243,7 @@ void blur()
                 if ((x == 0) && (y > 0) && (y < (SIZE - 1)))
                 {
                     div = 6.0;
-                    // Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    // Looping after the top edge's pixels and get each pixel's surrounding pixels + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                     for (int n = x; n <= x + 1; n++)
                     {
                         for (int m = y - 1; m <= y + 1; m++)
@@ -256,7 +256,7 @@ void blur()
                 if ((x == 0) && (y == SIZE - 1))
                 {
                     div = 4.0;
-                    // Getting the 3 pixels that surround the top right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
+                    // Getting the 3 pixels that surround the top right corner pixel + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel
                     for (int n = x; n <= x + 1; n++)
                     {
                         for (int m = y - 1; m <= y; m++)
@@ -269,7 +269,7 @@ void blur()
                 if ((x > 0) && (y == 0) && (x < SIZE - 1))
                 {
                     div = 6.0;
-                    // Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    // Looping after the left edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                     for (int n = x - 1; n <= x + 1; n++)
                     {
                         for (int m = y; m <= y + 1; m++)
@@ -282,7 +282,7 @@ void blur()
                 if ((x > 0) && (y == SIZE - 1) && (x < SIZE - 1))
                 {
                     div = 6.0;
-                    // Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    // Looping after the right edge's pixels except corners' pixels and get each pixel's surrounding pixels + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                     for (int n = x - 1; n <= x + 1; n++)
                     {
                         for (int m = y - 1; m <= y; m++)
@@ -295,7 +295,7 @@ void blur()
                 if ((x == (SIZE - 1)) && (y == 0))
                 {
                     div = 4.0;
-                    // Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
+                    // Getting the 3 pixels that surround the bottom left corner pixel + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel
                     for (int n = x - 1; n <= x; n++)
                     {
                         for (int m = y; m <= y + 1; m++)
@@ -308,7 +308,7 @@ void blur()
                 if ((x == (SIZE - 1)) && (y == (SIZE - 1)))
                 {
                     div = 4.0;
-                    // Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel
+                    // Getting the 3 pixels that surround the bottom right corner pixel + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel
                     for (int n = x - 1; n <= x; n++)
                     {
                         for (int m = y - 1; m <= y; m++)
@@ -321,7 +321,7 @@ void blur()
                 if (y > 0 && y < (SIZE - 1) && x > 0 && x < (SIZE - 1))
                 {
                     div = 9.0;
-                    // Looping after the pixels that are in the middle or (NOT in edges or corners pixels) then getting each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    // Looping after the pixels that are in the middle or (NOT in edges or corners pixels) then getting each pixel's surrounding pixels + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                     for (int n = x - 1; n <= x + 1; n++)
                     {
                         for (int m = y - 1; m <= y + 1; m++)
@@ -334,7 +334,7 @@ void blur()
                 if (y > 0 && y < (SIZE - 1) && x == (SIZE - 1))
                 {
                     div = 6.0;
-                    // Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then caculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
+                    // Looping after the bottom edge 's pixels and get each pixel's surrounding pixels + the pixel itself then calculating the average colours of them to store it in the new_image corresponding pixel(UPDATED pixel)
                     for (int n = x - 1; n <= x; n++)
                     {
                         for (int m = y - 1; m <= y + 1; m++)
@@ -372,7 +372,7 @@ void merge()
     }
 }
 
-void darkenlighten(string choice)
+void darken_lighten(string choice)
 {
 	// If user choose to darken the image
     if (choice == "d")
@@ -410,8 +410,8 @@ void shrink(int dimension)
 {
 	// Creating an grayscale image for to store horizontally shrinked original image version
     unsigned char neww_image[SIZE][SIZE];
-    // Counter for looping after every (dimension value) pixels each time
-    int counter = 0;
+    // cursor for looping after every (dimension value) pixels each time
+    int cursor = 0;
     // Variable for storing average of colour
     double AVG = 0;
     for (int i = 0; i < SIZE; ++i)
@@ -419,7 +419,7 @@ void shrink(int dimension)
         for (int j = 0; j < (SIZE / dimension); ++j)
         {
 			// Looping after every row to get every 2 pixels (for example (it can be 2 or 3 or 4 based on dimension value)) in it then shrink it into one pixel by taking the average of them horizontally
-            for (int c = counter; c < (counter + dimension); ++c)
+            for (int c = cursor; c < (cursor + dimension); ++c)
             {
                 AVG += image[i][c];
             }
@@ -427,26 +427,26 @@ void shrink(int dimension)
             neww_image[i][j] = (AVG / dimension);
 			// Resetting the average to its primary value
             AVG = 0;
-			// Updating counter to move to next 2 (for example) pixels in the row
-            counter += dimension;
+			// Updating cursor to move to next 2 (for example) pixels in the row
+            cursor += dimension;
         }
-        // Resetting counter to shrink next row
-        counter = 0;
+        // Resetting cursor to shrink next row
+        cursor = 0;
     }
     for (int i = 0; i < SIZE / dimension; ++i)
     {
         for (int j = 0; j < SIZE / dimension; ++j)
         {
 			// Looping after every column in shrinked neww_image to get every 2 pixels (it can be 2 or 3 or 4 based on dimension value) in it then shrink it into one pixel by taking the average of them vertically
-            for (int c = counter; c < (counter + dimension); ++c)
+            for (int c = cursor; c < (cursor + dimension); ++c)
             {
                 AVG += neww_image[c][j];
             }
             new_image[i][j] = (AVG / dimension);
             AVG = 0;
         }
-		// Updating counter to move to next 2 (for example) pixels in the columns
-        counter += dimension;
+		// Updating cursor to move to next 2 (for example) pixels in the columns
+        cursor += dimension;
     }
 	// Updating the original image to the shrinked one (new_image) and every pixel not in shrinked photo will be white pixel
     for (int x = 0; x < SIZE; x++)
