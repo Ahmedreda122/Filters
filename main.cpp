@@ -1,3 +1,17 @@
+/*
+    FCAI – Programming 1 – 2022 - Assignment 3
+    Program: photoshop
+    Purpose: Demonstrate use of bmplip for handling
+             bmp colored and grayscale images
+             Program load a gray image and do some filter at Image
+    Author:  Abdelrhman Tarek Mohamed       ---  20210206
+             Ahmad Reda Bayoumy Mohamed     ---  20210019
+             Tayseer Abdelkader Abdelhamed  ---  20211025
+
+    Teaching Assistant: Yousra Ayman
+
+    Last Modification Date:  23/4/2022
+*/
 #include <iostream>
 #include <fstream>
 #include <cstring>
